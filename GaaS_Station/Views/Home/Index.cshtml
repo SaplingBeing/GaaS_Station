@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<form class="d-flex justify-content-center mb-3" method="POST">
+    <div class="d-inline-block glassBg" id="searchContainer">
+        <div class="row p-0">
+            <div class="col-12 p-0">
+                <h1 class="text-center mb-4">Find the <span class="highlight">Cheapest Fuel</span> in <span class="fst-italic">Auckland</span></h1>
+            </div>
+        </div>
+        <div class="row p-0">
+            <div class="col-12 p-1">
+                <input type="text" class="form-control p-2" id="locationTb" placeholder="Enter location...">
+            </div>
+        </div>
+        <div class="row p-0">
+            <div class="col-sm-5 p-1">
+                <select class="form-select p-2">
+                    <option selected>Station</option>
+                    <option>BP</option>
+                    <option>Mobil</option>
+                    <option>Z Energy</option>
+                    <option>Gull</option>
+                </select>
+            </div>
+            <div class="col-sm-5 p-1">
+                <select class="form-select p-2">
+                    <option selected>Fuel Type</option>
+                    <option>91</option>
+                    <option>95</option>
+                    <option>98</option>
+                    <option>E10</option>
+                    <option>Diesel</option>
+                </select>
+            </div>
+            <div class="col-sm-2 p-1">
+                <button type="submit" class="btn d-inline-flex align-items-center justify-content-center p-2 submitBtn"><img src="/images/search.svg">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="row">
+
+</div>    

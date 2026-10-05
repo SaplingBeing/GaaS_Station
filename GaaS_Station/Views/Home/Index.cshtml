@@ -1,8 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@* Search *@
 <form class="d-flex justify-content-center mb-3" method="POST">
-    <div class="d-inline-block glassBg" id="searchContainer">
+    <div class="d-inline-block p-5 glassBg">
         <div class="row p-0">
             <div class="col-12 p-0">
                 <h1 class="text-center mb-4">Find the <span class="highlight">Cheapest Fuel</span> in <span class="fst-italic">Auckland</span></h1>
@@ -34,11 +35,20 @@
                 </select>
             </div>
             <div class="col-sm-2 p-1">
-                <button type="submit" class="btn d-inline-flex align-items-center justify-content-center p-2 submitBtn"><img src="/images/search.svg">Search</button>
+                <button type="submit" class="btn d-inline-flex align-items-center justify-content-center w-100 p-2 primaryBtn"><img src="/images/search.svg">Search</button>
             </div>
         </div>
     </div>
 </form>
-<div class="row">
+@* Auckland POI *@
+<div class="glassBg p-4">
+    <div class="row">
+        <div class="col-sm-4">
+            <h1><span class="fst-italic">Travel</span> with <span class="highlight">Purpose</span></h1>
+            <button class="btn w-50 p-2 primaryBtn">Explore</button>
+        </div>
+        <div class=col-sm-8>
 
-</div>    
+        </div>
+    </div>    
+</div>

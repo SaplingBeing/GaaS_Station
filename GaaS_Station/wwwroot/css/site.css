@@ -73,6 +73,12 @@ h1{
     box-shadow: 0 1px 4px 0 var(--shadowColour);
     backdrop-filter: blur(12px);
 }
+.primaryBtn {
+    color: var(--textColour) !important;
+    background-color: var(--primaryColour);
+    border-radius: 24px;
+    box-shadow: 0 1px 4px 0 var(--shadowColour);
+}
 /*Navigation Bar*/
 .gaasLogo {
     width: clamp(3.5rem,5vw,5rem);
@@ -122,13 +128,4 @@ footer{
     .highlight {
         font-size: calc(1em + 0.43rem);
     }
-}
-#searchContainer{
-    padding: 48px !important;
-}
-.submitBtn {
-    color: var(--textColour) !important;
-    background-color: var(--primaryColour);
-    border-radius: 24px;
-    width:100%;
 }

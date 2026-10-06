@@ -47,7 +47,7 @@ body {
     /*Font Size*/
     --fontBase: clamp(0.9rem, 2vw, 1rem);
     --fontMd: clamp(1rem, 2vw, 1.15rem);
-    --fontLg: 1.5rem;
+    --fontLg: clamp(1.2rem, 2vw, 1.5rem);
     --fontXlg: clamp(1.4rem, 4vw, 3.2rem);
     /*Font Family*/
     --fontText: 'Inter', sans-serif;
@@ -62,6 +62,12 @@ h1, h2, h3, h4, h5, h6{
 }
 h1{
     font-size: var(--fontXlg);
+}
+h2{
+    font-size: var(--fontLg);
+}
+h3{
+    font-size: var(--fontMd);
 }
 .highlight{
     font-size: calc(1em + 1.1rem);
@@ -114,7 +120,7 @@ h1{
     box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
 }
 /*Footer*/
-footer{
+footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
     color: var(--textColourInactive);
     border-top: 1px solid var(--textColour);
 }
@@ -128,4 +134,25 @@ footer{
     .highlight {
         font-size: calc(1em + 0.43rem);
     }
+}
+.imgContainer{
+    position: relative;
+    display: inline-block;
+}
+.teamImg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 200px 200px 0px 0px;
+    box-shadow: 0 1px 4px 0 var(--shadowColour);
+}
+.teamImg:hover {
+    filter: blur(4px);
+}
+.imgText {
+    position: absolute;
+    text-align: center;
+    top: 0%;
+    left: 0%;
+    
 }

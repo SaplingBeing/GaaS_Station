@@ -44,6 +44,7 @@ body {
     --backgroundColour: #FFFAF4;
     --primaryColour: #FFA159;
     --shadowColour: #8C8780;
+    --white: #F5F5F5;
     /*Font Size*/
     --fontBase: clamp(0.9rem, 2vw, 1rem);
     --fontMd: clamp(1rem, 2vw, 1.15rem);
@@ -79,11 +80,20 @@ h3{
     box-shadow: 0 1px 4px 0 var(--shadowColour);
     backdrop-filter: blur(12px);
 }
-.primaryBtn {
+.primaryBtn, .secondaryBtn {
     color: var(--textColour) !important;
-    background-color: var(--primaryColour);
     border-radius: 24px;
+}
+.primaryBtn {
+    background-color: var(--primaryColour);
     box-shadow: 0 1px 4px 0 var(--shadowColour);
+}
+.secondaryBtn {
+    border: 1.5px solid var(--textColour);
+}
+.secondaryBtn:hover{
+    color: var(--white) !important;
+    background-color: var(--textColour);
 }
 /*Navigation Bar*/
 .gaasLogo {
@@ -134,9 +144,33 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
     .highlight {
         font-size: calc(1em + 0.43rem);
     }
-    #searchContainer{
+    #searchContainer {
         padding: 32px !important;
     }
+    #poiContainer {
+        margin: 0px !important;
+    }
+}
+.featuredImg {
+    width: 60%;
+    height: auto;
+    aspect-ratio: 1/1;
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+#img2, #img3{
+    margin-left: -50%;
+}
+.featuredImg:hover {
+    z-index: 3 !important;
+    transform: translateX(-8px);
+}
+body:has(#img2:hover) #img1{
+    transform: translateX(-8px) !important;
+}
+body:has(#img3:hover) #img2 {
+    z-index:3 !important;
+    transform: translateX(-8px) !important;
 }
 .imgContainer{
     position: relative;

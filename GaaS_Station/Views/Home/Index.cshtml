@@ -2,7 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 @* Search *@
-<form class="d-flex justify-content-center mb-3" method="POST">
+<form class="d-flex justify-content-center mb-5" method="POST">
     <div class="d-inline-block p-5 glassBg" id="searchContainer">
         <div class="row p-0">
             <div class="col-12 p-0">
@@ -43,23 +43,23 @@
         </div>
     </div>
 </form>
+<br />
 @* Auckland POI *@
-<div class="glassBg p-4">
+<div class="glassBg d-inline-block p-5 m-5" id="poiContainer">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4 p-0">
             <h1><span class="fst-italic">Travel</span> with <span class="highlight">Purpose</span></h1>
-            <div class="position-relative">
-                <span class="position-absolute end-50 mt-1 me-4 z-3"><img src="/images/box-arrow-up-right.svg" alt="New Page Icon"></span>
-                <button class="btn w-50 p-2 primaryBtn">Explore</button>
-            </div>
+            <button class="btn w-50 p-2 secondaryBtn">Explore</button>
         </div>
-        <div class=col-sm-8>
-            <img src="/images/Waitakere Ranges.png" alt="Waitakere Ranges">
+        <div class="col-sm-8 p-0 d-flex position-relative overflow-hidden align-items-center justify-content-center">
+            <img src="/images/sky-tower.jpg" alt="Sky Tower" class="featuredImg z-3" id="img1">
+            <img src="/images/winter-garden.jpeg" alt="Winter Garden" class="featuredImg z-2" id="img2">
+            <img src="/images/waitakere-ranges.png" alt="Waitakere Ranges" class="featuredImg z-1" id="img3">
         </div>
     </div>    
 </div>
 @* Meet the Team *@
-<div class="d-flex justify-content-center">
+<div class="d-flex position-relative justify-content-center">
     <div class="row">
         <div class="col-12 text-center">
             <h1><span class="fst-italic">Meet</span> our <span class="highlight">Team</span></h1>

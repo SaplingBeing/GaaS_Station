@@ -54,9 +54,9 @@ body {
     --fontText: 'Inter', sans-serif;
     --fontHeading: 'Syne', sans-serif;
 }
-p, a, .form-select, .form-control {
-    font-family: var(--fontText);
-    font-size: var(--fontBase);
+p, a, .form-select, .form-control, .accordion-body{
+    font-family: var(--fontText) !important;
+    font-size: var(--fontBase) !important;
 }
 h1, h2, h3, h4, h5, h6{
     font-family: var(--fontHeading);
@@ -98,6 +98,20 @@ h3{
 .secondaryBtn:hover{
     color: var(--white) !important;
     background-color: var(--textColour);
+}
+.accordion-item, .accordion-button {
+    background-color: transparent !important;
+    border-radius: 0px !important;
+    border: none;
+    box-shadow: none !important;
+}
+.accordion-button {
+    color: var(--textColourInactive);
+    font-size: var(--fontLg);
+    border-bottom: 1px solid var(--textColour);
+}
+.accordion {
+    --bs-accordion-active-color: var(--textColour) !important;
 }
 /*Navigation Bar*/
 .gaasLogo {
@@ -151,11 +165,20 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
     .highlight {
         font-size: calc(1em + 0.43rem);
     }
+
     .featuredImg {
         width: 80% !important;
     }
     #img2, #img3 {
         margin-left: -70% !important;
+    }
+    .teamImg {
+        width: 55% !important;
+        height: auto;
+        box-shadow: 0 1px 4px 0 var(--shadowColour);
+    }
+    #faqContainer{
+        margin: 0px 0px 48px 0px !important;
     }
 }
 @media screen and (max-width: 992px){
@@ -196,6 +219,7 @@ body:has(#img3:hover) #img1 {
     filter: blur(1.5px);
 }
 .teamImg {
+    display: block;
     width: 100%;
     height: auto;
     border-radius: 200px 200px 0px 0px;
@@ -203,4 +227,7 @@ body:has(#img3:hover) #img1 {
 }
 .teamImg:hover {
     filter: blur(4px);
+}
+.name{
+    color: var(--white);
 }

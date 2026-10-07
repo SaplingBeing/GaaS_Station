@@ -151,21 +151,16 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
     .highlight {
         font-size: calc(1em + 0.43rem);
     }
-    #searchContainer {
-        padding: 32px !important;
-    }
-}
-@media screen and (max-width: 992px){
     .featuredImg {
         width: 80% !important;
     }
-
     #img2, #img3 {
         margin-left: -70% !important;
     }
-
-    #poiContainer {
-        margin: 0px !important;
+}
+@media screen and (max-width: 992px){
+    #searchContainer {
+        padding: 32px !important;
     }
 }
 /*Will move to a new css file later*/
@@ -179,17 +174,23 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
 }
 #img2, #img3{
     margin-left: -50%;
+    filter: blur(1.5px);
 }
 .featuredImg:hover {
+    filter: blur(0px) !important;
     z-index: 3 !important;
     transform: translateX(-8px);
 }
 body:has(#img2:hover) #img1{
+    filter: blur(1.5px);
     transform: translateX(-8px) !important;
 }
 body:has(#img3:hover) #img2 {
-    z-index:3 !important;
+    z-index: 3 !important;
     transform: translateX(-8px) !important;
+}
+body:has(#img3:hover) #img1 {
+    filter: blur(1.5px);
 }
 .imgContainer{
     position: relative;

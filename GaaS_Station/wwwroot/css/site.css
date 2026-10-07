@@ -49,7 +49,7 @@ body {
     --fontBase: clamp(0.9rem, 2vw, 1rem);
     --fontMd: clamp(1rem, 2vw, 1.15rem);
     --fontLg: clamp(1.2rem, 2vw, 1.5rem);
-    --fontXlg: clamp(1.4rem, 4vw, 3.2rem);
+    --fontXlg: clamp(1.8rem, 4vw, 3.2rem);
     /*Font Family*/
     --fontText: 'Inter', sans-serif;
     --fontHeading: 'Syne', sans-serif;
@@ -162,6 +162,9 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
     #searchContainer {
         padding: 32px !important;
     }
+    #poiContainer{
+        margin: 0px 0px 48px 0px !important;
+    }
 }
 /*Will move to a new css file later*/
 /*Index*/
@@ -192,12 +195,7 @@ body:has(#img3:hover) #img2 {
 body:has(#img3:hover) #img1 {
     filter: blur(1.5px);
 }
-.imgContainer{
-    position: relative;
-    display: inline-block;
-}
 .teamImg {
-    display: block;
     width: 100%;
     height: auto;
     border-radius: 200px 200px 0px 0px;
@@ -205,11 +203,4 @@ body:has(#img3:hover) #img1 {
 }
 .teamImg:hover {
     filter: blur(4px);
-}
-.imgText {
-    position: absolute;
-    text-align: center;
-    top: 0%;
-    left: 0%;
-    
 }

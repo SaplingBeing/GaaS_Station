@@ -1,4 +1,7 @@
-﻿<div class="offcanvas offcanvas-start p-3 position-relative" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasGaas">
+﻿<div id="map">
+    
+</div>
+<div class="offcanvas offcanvas-start p-3 position-absolute" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasGaas">
     <button class="offcanvasBtn position-absolute" data-bs-toggle="offcanvas" data-bs-target="#offcanvasGaas">GaaS</button>
     <div class="offcanvas-body">
         <form method="POST">
@@ -39,3 +42,19 @@
         </form>
     </div>
 </div>
+
+<script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+<script>
+     const map = new maplibregl.Map({
+        container: 'map',
+        style: 'https://tiles.openfreemap.org/styles/liberty', // or bright / positron
+        center: [174.76, -36.85], // lng, lat — Auckland
+        zoom: 11,
+        dragRotate: false,
+        pitchWithRotate: false,  // stop tilt from sneaking in alongside rotation
+        touchPitch: false,       // stop two-finger pitch on touch/trackpad
+        dragPan: { inertia: false } // stop the "gliding" after you release a drag
+    });
+    // map.addControl(new maplibregl.NavigationControl());
+    map.touchZoomRotate.disableRotation();
+</script>

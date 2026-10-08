@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-5">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-5 z-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="/images/GaaSLogo.png" alt="GaaS Station Logo" class="gaasLogo"></a>
                 <button class="navbar-toggler glassBg" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -44,7 +44,7 @@
         </nav>
     </header>
     @* <div class="container-fluid"> *@
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     @* </div> *@

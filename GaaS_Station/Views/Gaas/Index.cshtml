@@ -1,0 +1,41 @@
+﻿<div class="offcanvas offcanvas-start p-3 position-relative" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasGaas">
+    <button class="offcanvasBtn position-absolute" data-bs-toggle="offcanvas" data-bs-target="#offcanvasGaas">GaaS</button>
+    <div class="offcanvas-body">
+        <form method="POST">
+            <div class="row p-0">
+                <div class="col-12 p-1 position-relative">
+                    <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/geo-alt.svg" alt="Location Icon"></span>
+                    <input type="text" class="form-control w-100 ps-5" id="locationTb" placeholder="Enter location...">
+                </div>
+            </div>
+            <div class="row p-0">
+                <div class="col-sm-6 p-1 position-relative">
+                    <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/shop.svg" alt="Station Icon"></span>
+                    <select class="form-select p-2 ps-5">
+                        <option selected>Station</option>
+                        <option value="BP">BP</option>
+                        <option value="Mobil">Mobil</option>
+                        <option value="Z-Energy">Z Energy</option>
+                        <option value="Gull">Gull</option>
+                    </select>
+                </div>
+                <div class="col-sm-6 p-1 position-relative">
+                    <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/fuel-pump.svg" alt="Fuel Type Icon"></span>
+                    <select class="form-select p-2 ps-5">
+                        <option selected class="dropdown-item">Fuel Type</option>
+                        <option value="91">91</option>
+                        <option value="95">95</option>
+                        <option value="98">98</option>
+                        <option value="E10">E10</option>
+                        <option value="Disel">Diesel</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 p-1">
+                    <button type="submit" class="btn d-inline-flex align-items-center justify-content-center w-100 p-2 primaryBtn"><img src="/images/search.svg" alt="Search Icon">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

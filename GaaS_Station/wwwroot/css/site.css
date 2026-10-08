@@ -76,12 +76,29 @@ h3{
 .highlight{
     font-size: calc(1em + 1.1rem);
 }
-.glassBg, .form-control, .form-select{
+.glassBg, .form-control, .form-select, .offcanvas{
     background-color: rgba(255, 255, 255, 0.2);
     border: 1px solid white;
     border-radius: 24px;
     box-shadow: 0 1px 4px 0 var(--shadowColour);
     backdrop-filter: blur(12px);
+}
+.offcanvas {
+    --bs-offcanvas-width: 35vw;
+    --bs-offcanvas-height: 100;
+    border-radius: 0px 24px 24px 0px;
+}
+.offcanvasBtn {
+    color: var(--textColour);
+    background-color: var(--primaryColour);
+    font-size: var(--fontLg);
+    font-family: var(--fontHeading);
+    writing-mode: vertical-lr;
+    border: none;
+    border-radius: 0px 12px 12px 0px;
+    padding: 10px;
+    left: 35vw;
+    visibility: visible;
 }
 .primaryBtn, .secondaryBtn {
     color: var(--textColour) !important;
@@ -187,6 +204,14 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
     }
     #poiContainer{
         margin: 0px 0px 48px 0px !important;
+    }   
+    .offcanvas{
+        width: 60vw !important;
+    }
+    .offcanvasBtn {
+        padding: 10px;
+        left: 60vw;
+        visibility: visible;
     }
 }
 /*Will move to a new css file later*/

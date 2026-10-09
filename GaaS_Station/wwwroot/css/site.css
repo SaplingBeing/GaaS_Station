@@ -1,22 +1,4 @@
-html, body {
-    background-color: var(--backgroundColour);
-    background-image: url(/images/blob1.png);   
-    background-repeat: no-repeat;
-}
-html {
-    position: relative;
-    min-height: 100%;
-}
-/*.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}*/
-
-/*Imported Font from Google*/
+/*Imported font from Google*/
 @font-face {
     font-family: 'Syne';
     font-style: normal;
@@ -32,62 +14,55 @@ html {
     --primaryColour: #FFA159;
     --shadowColour: #8C8780;
     --white: #F5F5F5;
-    /*Font Size*/
-    --fontBase: clamp(0.9rem, 2vw, 1rem);
+    /*Font sizes*/
+    --fontSm: clamp(0.9rem, 2vw, 1rem);
     --fontMd: clamp(1rem, 2vw, 1.15rem);
     --fontLg: clamp(1.2rem, 2vw, 1.5rem);
     --fontXlg: clamp(1.8rem, 4vw, 3.2rem);
-    /*Font Family*/
-    --fontText: 'Inter', sans-serif;
+    /*Font family*/
+    --fontBody: 'Inter', sans-serif;
     --fontHeading: 'Syne', sans-serif;
 }
-p, a, .form-select, .form-control, .accordion-body{
-    font-family: var(--fontText) !important;
-    font-size: var(--fontBase) !important;
+html, body {
+    background-color: var(--backgroundColour);
+    background-image: url(/images/blob1.png);
+    background-repeat: no-repeat;
 }
-h1, h2, h3, h4, h5, h6{
+html {
+    position: relative;
+    min-height: 100%;
+}
+/*Typography*/
+p, a, .form-select, .form-control, .accordion-body {
+    font-family: var(--fontBody) !important;
+    font-size: var(--fontSm) !important;
+}
+h1, h2, h3, h4, h5, h6 {
     font-family: var(--fontHeading);
 }
-h1{
+h1 {
     font-size: var(--fontXlg);
 }
-h2{
+h2 {
     font-size: var(--fontLg);
 }
-h3{
+h3 {
     font-size: var(--fontMd);
+}
+.highlight {
+    font-size: calc(1em + 1.1rem);
 }
 .form-control::placeholder {
     color: var(--textColour);
 }
-.highlight{
-    font-size: calc(1em + 1.1rem);
-}
-.glassBg, .form-control, .form-select, .offcanvas{
+.glassBg, .form-control, .form-select, .offcanvas, .btn-close{
     background-color: rgba(255, 255, 255, 0.2);
     border: 1px solid white;
     border-radius: 24px;
     box-shadow: 0 1px 4px 0 var(--shadowColour);
     backdrop-filter: blur(12px);
 }
-.offcanvas {
-    --bs-offcanvas-width: 35vw;
-    --bs-offcanvas-height: 100;
-    border-radius: 0px 24px 24px 0px;
-}
-.offcanvasBtn {
-    color: var(--textColour);
-    background-color: var(--primaryColour);
-    font-size: var(--fontLg);
-    font-family: var(--fontHeading);
-    writing-mode: vertical-lr;
-    border: none;
-    border-radius: 0px 12px 12px 0px;
-    padding: 10px;
-    left: 35vw;
-    transform: translateY(20vh);
-    visibility: visible;
-}
+/*Buttons*/
 .primaryBtn, .secondaryBtn {
     color: var(--textColour) !important;
     border-radius: 24px;
@@ -104,6 +79,26 @@ h3{
     color: var(--white) !important;
     background-color: var(--textColour);
 }
+/*Bootstrap | offcanvas*/
+.offcanvas {
+    --bs-offcanvas-width: 35vw;
+    --bs-offcanvas-height: 100vh;
+    border-radius: 0px 24px 24px 0px;
+}
+.offcanvasBtn {
+    color: var(--textColour);
+    background-color: var(--primaryColour);
+    font-size: var(--fontLg);
+    font-family: var(--fontHeading);
+    writing-mode: vertical-lr;
+    border: none;
+    border-radius: 0px 12px 12px 0px;
+    padding: 10px;
+    left: 35vw;
+    transform: translateY(20vh);
+    visibility: visible;
+}
+/*Bootstrap | Accordion*/
 .accordion-item, .accordion-button {
     background-color: transparent !important;
     border-radius: 0px !important;
@@ -118,11 +113,21 @@ h3{
 .accordion {
     --bs-accordion-active-color: var(--textColour) !important;
 }
-/*Navigation Bar*/
+/*Navigation bar*/
 .gaasLogo {
     width: clamp(3.5rem,5vw,5rem);
     height: clamp(3.5rem,5vw,5rem);
 }
+.loginBtn {
+    color: var(--textColour);
+    background-color: var(--primaryColour);
+}
+.icon {
+    fill: var(--textColourInactive) !important;
+    width: 20px;
+    height: 20px;
+}
+/*Bootstrap | Navigation bar*/
 .navbar{
     font-family:var(--FontHeading);
 }
@@ -140,15 +145,6 @@ h3{
     box-shadow: inset 0 0 0 0.5px var(--shadowColour);
     backdrop-filter: blur(2px);
 }
-.loginBtn{
-    color: var(--textColour);
-    background-color: var(--primaryColour);
-}
-.icon{
-    fill: var(--textColourInactive) !important;
-    width: 20px;
-    height: 20px;
-}
 .navbar-toggler:focus, .navbar-toggler:active {
     box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
 }
@@ -160,59 +156,7 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
 .footerColR{
     text-align: right;
 }
-@media screen and (max-width: 576px) {
-    .primaryBtn, .secondaryBtn {
-        width: 100%;
-    }
-
-    .footerColR {
-        text-align: left;
-    }
-
-    .highlight {
-        font-size: calc(1em + 0.43rem);
-    }
-
-    .featuredImg {
-        width: 80% !important;
-    }
-
-    #img2, #img3 {
-        margin-left: -70% !important;
-    }
-
-    .teamImg {
-        width: 55% !important;
-        height: auto;
-        box-shadow: 0 1px 4px 0 var(--shadowColour);
-    }
-
-    #faqContainer {
-        margin: 0px 0px 48px 0px !important;
-    }
-
-    .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-zoom-out {
-        margin-bottom: 80px !important;
-    }
-}
-@media screen and (max-width: 992px){
-    #searchContainer {
-        padding: 32px !important;
-    }
-    #poiContainer{
-        margin: 0px 0px 48px 0px !important;
-    }   
-    .offcanvas{
-        width: 60vw !important;
-    }
-    .offcanvasBtn {
-        padding: 10px;
-        left: 60vw;
-        visibility: visible;
-    }
-}
-/*Will move to a new css file later*/
-/*Index*/
+/*Home | Index*/
 .featuredImg {
     width: 60%;
     height: auto;
@@ -253,6 +197,7 @@ body:has(#img3:hover) #img1 {
 .name{
     color: var(--white);
 }
+/*GaaS | Index*/
 #map {
     position: absolute;
     top: 0;
@@ -272,6 +217,7 @@ body:has(#img3:hover) #img1 {
 .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-zoom-out{
     width: 50px;
     height: 50px;
+    color: var(--textColour);
     background-color: rgba(255, 255, 255, 0.2);
     border: 1px solid white;
     border-radius: 40px;
@@ -293,4 +239,52 @@ body:has(#img3:hover) #img1 {
 }
 .maplibregl-ctrl-compass {
     visibility: hidden;
+}
+/*Media query*/
+/*Small screens*/
+@media screen and (max-width: 576px) {
+    .primaryBtn, .secondaryBtn {
+        width: 100%;
+    }
+    .footerColR {
+        text-align: left;
+    }
+    .highlight {
+        font-size: calc(1em + 0.43rem);
+    }
+    .featuredImg {
+        width: 80% !important;
+    }
+    #img2, #img3 {
+        margin-left: -70% !important;
+    }
+    .teamImg {
+        width: 55% !important;
+        height: auto;
+        box-shadow: 0 1px 4px 0 var(--shadowColour);
+    }
+    #faqContainer {
+        margin: 0px 0px 48px 0px !important;
+    }
+    .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-zoom-out {
+        margin-bottom: 80px !important;
+    }
+}
+/*Medium Screens*/
+@media screen and (max-width: 992px){
+    #searchContainer {
+        padding: 32px !important;
+    }
+    #poiContainer{
+        margin: 0px 0px 48px 0px !important;
+    }   
+    .offcanvas{
+        width: 100vw !important;
+        border-radius: 0px !important; 
+    }
+    .offcanvasBtn {
+        padding: 10px;
+        left: 100vw;
+        visibility: visible;
+    }
 }

@@ -1,6 +1,9 @@
 ﻿<div id="map"></div>
 <div class="offcanvas offcanvas-start p-3 position-absolute" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasGaas">
     <button class="offcanvasBtn position-absolute" data-bs-toggle="offcanvas" data-bs-target="#offcanvasGaas">GaaS</button>
+    <div class="offcanvas-header">
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
     <div class="offcanvas-body">
         <form method="POST">
             <div class="row p-0">
@@ -43,6 +46,7 @@
 
 <script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
 <script>
+
     const aucklandBounds = [
         [174.450, -37.150], 
         [175.250, -36.400]

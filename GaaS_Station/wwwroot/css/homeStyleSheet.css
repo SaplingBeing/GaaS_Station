@@ -1,4 +1,20 @@
-﻿.featuredImg {
+﻿#backgroundImg {
+    width: 100vw;
+    height: 80vh;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    border-radius: 0px 0px 80px 80px;
+    object-fit: cover;
+}
+#searchContainer{
+    margin-bottom:30vh;
+}
+.featuredImg {
     width: 60%;
     height: auto;
     aspect-ratio: 1/1;
@@ -41,6 +57,10 @@ body:has(#img3:hover) #img1 {
 /*Media Query*/
 /*Small Screen*/
 @media screen and (max-width: 576px) {
+    #backgroundImg{
+        height:100vh !important;
+        border-radius: 0;
+    }
     .featuredImg {
         width: 80% !important;
     }
@@ -58,10 +78,6 @@ body:has(#img3:hover) #img1 {
 }
 /*Medium Screen*/
 @media screen and (max-width: 992px){
-    #searchContainer {
-        padding: 32px !important;
-    }
-
     #poiContainer {
         margin: 0px 0px 48px 0px !important;
     }   

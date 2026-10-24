@@ -1,11 +1,13 @@
 ﻿@{ViewData["Title"] = "Home Page";}
 <link rel="stylesheet" href="~/css/homeStyleSheet.css" asp-append-version="true">
-@* GaaS search *@
-<form class="d-flex justify-content-center mb-5" method="POST">
-    <div class="d-inline-block p-5 glassBg" id="searchContainer">
+@*Background image*@
+<img src="~/images/bg.jpg" alt="Background Image" id="backgroundImg"/>
+@*GaaS search bar*@
+<form class="d-flex justify-content-center" id="searchContainer" method="POST">
+    <div class="d-inline-block p-5 m-3 glassBg">
         <div class="row p-0">
             <div class="col-12 p-0">
-                <h1 class="text-center mb-4">Find the <span class="highlight">Cheapest Fuel</span> in <span class="fst-italic">Auckland</span></h1>
+                <h1 class="text-center mb-3">Find Auckland's<span class="fst-italic highlight"> Cheapest Gas</span></h1>
             </div>
         </div>
         <div class="row p-0">
@@ -32,7 +34,6 @@
                     <option value="91">91</option>
                     <option value="95">95</option>
                     <option value="98">98</option>
-                    <option value="E10">E10</option>
                     <option value="Disel">Diesel</option>
                 </select>
             </div>
@@ -41,8 +42,7 @@
             </div>
         </div>
     </div>
-</form>
-<br />
+</form> 
 @* Auckland POI *@
 <div class="d-inline-block overflow-hidden p-0 m-5 glassBg" id="poiContainer">
     <div class="row">

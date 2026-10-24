@@ -1,11 +1,13 @@
-﻿<div id="map"></div>
+﻿@{ViewData["Title"] = "GaaS";}
+<link rel="stylesheet" href="~/css/gaasStyleSheet.css" asp-append-version="true">
+<div id="map"></div>
 <div class="offcanvas offcanvas-start p-3 position-absolute" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasGaas">
     <button class="offcanvasBtn position-absolute" data-bs-toggle="offcanvas" data-bs-target="#offcanvasGaas">GaaS</button>
     <div class="offcanvas-header">
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <form method="POST">
+        <form method="POST" class="mb-3">
             <div class="row p-0">
                 <div class="col-12 p-1 position-relative">
                     <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/geo-alt.svg" alt="Location Icon"></span>
@@ -41,6 +43,24 @@
                 </div>
             </div>
         </form>
+        <hr>
+        <div class="p-3 container-fluid glassBg">
+            <div class="row">
+                <div class="col-2">
+                    <img src="~/images/zenergyLogo.png" alt="Z Energy Logo"/>
+                </div>
+                <div class="col-2">
+                    <h3>91</h3>
+                    <h3>95</h3>
+                    <h3>Disel</h3>
+                </div>
+                <div class="col-8 position-relative">
+                    <h3 class="fw-bold">Z Energy Hunter's Corner</h3>
+                    <p>72-76 East Tamaki Road, Papatoetoe, Auckland 2025</p>
+                    <button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -61,6 +81,9 @@
         touchPitch: false,       
         dragPan: { inertia: false }
     });
+    const marker = new maplibregl.Marker()
+  .setLngLat([174.76, -36.85])
+  .addTo(map);
     map.addControl(new maplibregl.NavigationControl());
     map.touchZoomRotate.disableRotation();
     map.setMaxBounds(aucklandBounds);

@@ -175,6 +175,9 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
     .highlight {
         font-size: calc(1em + 0.43rem);
     }
+    #registerContainer {
+        border-radius: 0px !important;
+    }
 }
 /*Medium Screen*/
 @media screen and (max-width: 992px){

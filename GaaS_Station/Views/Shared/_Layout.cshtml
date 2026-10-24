@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/GaaS_Station.styles.css" asp-append-version="true" />
 </head>
 <body>
-    @if (ViewData["HideNavbar"] == null || !(bool)ViewData["HideNavbar"]){
+    @if (ViewData["Hide"]==null){
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-5 z-3">
                 <div class="container-fluid">
@@ -50,21 +50,23 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row gy-0">
-                <div class="col-sm-6 lh-1 p-2">
-                    <p class="m-0">&copy; 2026 GaaS Station | All Rights Reserved</p>
+        @if (ViewData["Hide"] == null)
+        {
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row gy-0">
+                        <div class="col-sm-6 lh-1 p-2">
+                            <p class="m-0">&copy; 2026 GaaS Station | All Rights Reserved</p>
+                        </div>
+                        <div class="col-sm-6 lh-1 p-2 footerColR">
+                            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-reset text-decoration-none">Privacy Policy</a>
+                            <span>|</span>
+                            <a asp-area="" asp-controller="#" asp-action="#" class="text-reset text-decoration-none">Terms & Conditions</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-6 lh-1 p-2 footerColR">
-                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-reset text-decoration-none">Privacy Policy</a>
-                    <span>|</span>
-                    <a asp-area="" asp-controller="#" asp-action="#" class="text-reset text-decoration-none">Terms & Conditions</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+            </footer>
+        }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

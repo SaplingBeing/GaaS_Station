@@ -2,20 +2,20 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
-    ViewData["HideNavbar"] = true;
+    ViewData["Hide"] = true;
 }
-
-<div class="row d-flex align-items-center vh-100">
-    <div class="col-md-6">
-        <form class="glassBg p-5" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <a class="btn w-0 secondaryBtn" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/arrow-left.svg"/> Return home</a>
+<img src="~/images/bg2.png" class="bgImage"/>
+<div class="row vh-100">
+    <div class="col-sm-5 d-flex justify-content-center align-items-center glassBg" id="registerContainer">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <a class="text-reset" asp-area="" asp-controller="Home" asp-action="Index"><h2>Return home</h2></a>
             <h1>Create an account</h1>
             <p>Already have an account? Log in</p>
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="row">
                 <div class="col-6">
                     <div class="form-floating mb-3">
-                        <input asp-for="Input.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="FirstName" required/>
+                        <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="First Name" required/>
                         <label asp-for="Input.FirstName">First Name</label>
                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     </div>
@@ -43,14 +43,10 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <hr />
             <p class="d-flex justify-content-center align-items-center">Or register with</p>
-            <a class="btn w-100 mb-3 secondaryBtn"><h2>Google</h2></a>
+            <a class="btn w-100 mb-3 p-2 secondaryBtn"><h2 class="m-0" id="googleBtn">Google</h2></a>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg primaryBtn">Create account</button>
         </form>
-    </div>
-    <div class="col-md-6">
-        <img src="~/images/ack.jpg" id="registerImg"/>
     </div>
     @* <div class="col-md-6 col-md-offset-2">
         <section>

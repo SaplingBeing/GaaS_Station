@@ -72,9 +72,9 @@ h3 {
     color: var(--textColour) !important;
     border-radius: 24px;
 }
-.primaryBtn {
-    background-color: var(--primaryColour);
-    box-shadow: 0 1px 4px 0 var(--shadowColour);
+.primaryBtn, .primaryBtn:hover {
+    background-color: var(--primaryColour) !important;
+    box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
 }
 .secondaryBtn {
     border: 1.5px solid var(--textColour);

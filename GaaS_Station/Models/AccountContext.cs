@@ -8,6 +8,7 @@ namespace GaaS_Station.Models;
 
 public partial class AccountContext : DbContext
 {
+    public DbSet<GaaS_Station.Models.AspNetUser> AspNetUser { get; set; } = default!;
     public AccountContext(DbContextOptions<AccountContext> options)
         : base(options)
     {

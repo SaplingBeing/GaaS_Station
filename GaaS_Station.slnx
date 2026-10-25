@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="GaaS_API_Account/GaaS_API_Account.csproj" Id="271da811-8b81-4a10-be79-223952917e24" />
   <Project Path="GaaS_Station/GaaS_Station.csproj" />
 </Solution>

@@ -1,0 +1,6 @@
+@GaaS_API_Account_HostAddress = http://localhost:5179
+
+GET {{GaaS_API_Account_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

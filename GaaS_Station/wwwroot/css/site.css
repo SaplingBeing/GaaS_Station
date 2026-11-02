@@ -260,10 +260,10 @@ th, td {
     backdrop-filter: blur(10px);
 }
 
-.offcanvas:not(.show) {
-    background-color: none;
-    border-top: none;
-    border-bottom: none;
-    box-shadow: none;
-    backdrop-filter: none;
-}
+    .offcanvas:not(.show) {
+        background-color: none;
+        border-top: none;
+        border-bottom: none;
+        box-shadow: none;
+        backdrop-filter: none;
+    }

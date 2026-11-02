@@ -1,58 +1,18 @@
 @model IEnumerable<GaaS_Station.Models.AspNetUser>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Users CRUD";
 }
-
-<h1>Index</h1>
+<h1>Users CRUD</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<div class="d-flex justify-content-center">
+<table class="glassBg">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NormalizedUserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NormalizedEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmailConfirmed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PasswordHash)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SecurityStamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConcurrencyStamp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TwoFactorEnabled)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LockoutEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LockoutEnabled)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccessFailedCount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
@@ -61,13 +21,13 @@
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AspNetUserClaims)
+                @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AspNetUserLogins)
+                @Html.DisplayNameFor(model => model.EmailConfirmed)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AspNetUserTokens)
+                @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Roles)
@@ -77,48 +37,9 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="tbData">
             <td>
                 @Html.DisplayFor(model => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.NormalizedUserName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.NormalizedEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.EmailConfirmed)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PasswordHash)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.SecurityStamp)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ConcurrencyStamp)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PhoneNumberConfirmed)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.TwoFactorEnabled)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.LockoutEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.LockoutEnabled)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.AccessFailedCount)
             </td>
             <td>
                 @Html.DisplayFor(model => item.FirstName)
@@ -127,13 +48,13 @@
                 @Html.DisplayFor(model => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(model => item.AspNetUserClaims)
+                @Html.DisplayFor(model => item.Email)
             </td>
             <td>
-                @Html.DisplayFor(model => item.AspNetUserLogins)
+                @Html.DisplayFor(model => item.EmailConfirmed)
             </td>
             <td>
-                @Html.DisplayFor(model => item.AspNetUserTokens)
+                @Html.DisplayFor(model => item.PhoneNumber)
             </td>
             <td>
                 @Html.DisplayFor(model => item.Roles)

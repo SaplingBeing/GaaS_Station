@@ -15,6 +15,7 @@ public partial class AspNetUser
     public string Id { get; set; }
 
     [StringLength(256)]
+    [Display(Name = "Username")]
     public string UserName { get; set; }
 
     [StringLength(256)]
@@ -26,6 +27,7 @@ public partial class AspNetUser
     [StringLength(256)]
     public string NormalizedEmail { get; set; }
 
+    [Display(Name = "Email Confirmed")]
     public bool EmailConfirmed { get; set; }
 
     public string PasswordHash { get; set; }
@@ -34,6 +36,7 @@ public partial class AspNetUser
 
     public string ConcurrencyStamp { get; set; }
 
+    [Display(Name = "Phone Number")]
     public string PhoneNumber { get; set; }
 
     public bool PhoneNumberConfirmed { get; set; }
@@ -47,9 +50,11 @@ public partial class AspNetUser
     public int AccessFailedCount { get; set; }
 
     [StringLength(100)]
+    [Display(Name = "First Name")]
     public string FirstName { get; set; }
 
     [StringLength(100)]
+    [Display(Name = "Last Name")]
     public string LastName { get; set; }
 
     [InverseProperty("User")]
@@ -63,5 +68,6 @@ public partial class AspNetUser
 
     [ForeignKey("UserId")]
     [InverseProperty("Users")]
+    [Display(Name = "Role")]
     public virtual ICollection<AspNetRole> Roles { get; set; } = new List<AspNetRole>();
 }

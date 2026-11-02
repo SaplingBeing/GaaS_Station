@@ -59,7 +59,7 @@ h3 {
 .form-floating > label::after {
     background-color: transparent !important;
 }
-.glassBg, .form-control, .form-select, .offcanvas, .dropdown-menu{
+.glassBg, .form-control, .form-select, .offcanvas, .dropdown-menu, .tbData{
     background-color: rgba(255, 255, 255, 0.2);
     border-top: 1.5px solid var(--white);
     border-bottom: 0.5px solid var(--white);
@@ -163,6 +163,14 @@ footer{box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
 }
 .footerColR{
     text-align: right;
+}
+/*Table*/
+table{
+    border-collapse: separate;
+    border-spacing: 16px 14px;
+}
+th, td{
+    padding: 16px;
 }
 /*Media query*/
 /*Small screen*/

@@ -1,0 +1,163 @@
+﻿@{
+	ViewData["Title"] = "Contact Us";
+}
+
+<link rel="stylesheet" href="~/css/homeStyleSheet.css" asp-append-version="true">
+
+@*Contact Us*@
+<div class="row">
+	<div class="col-12 text-center mb-3">
+		<h1><b>Contact Us</b></h1>
+	</div>
+</div>
+
+@* Contact us div for contact form and details *@
+<div class="row p-2 mb-2">
+	@* Contact form *@
+	<div class="col-sm-6 position-relative mb-3 p-2">
+		<div class="m-4 p-4 glassBg">
+			<form action="/Index/Contact" id="contact" method="POST">
+
+				<div class="flex-column p-2">
+					<input class="form-control p-2 " type="text" id="name" name="Name" placeholder="Name" required>
+				</div>
+
+				<div class="flex-column p-2">
+					<input class="form-control p-2" type="email" id="email" name="Email" placeholder="Email" required>
+				</div>
+
+				<div class="flex-column p-2">
+					<textarea class="form-control p-2" id="message" name="Message" rows="5" placeholder="Message" required></textarea>
+				</div>
+
+				<div class="col-sm-3 p-2">
+					<button type="submit" class="btn d-inline-flex align-items-center justify-content-center w-100 p-2 primaryBtn">Send</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	@* contact details *@
+	<div class="container col-sm-6 position-relative mb-3">
+		<div class="align-items-center">
+			<div class="p-4 d-flex align-items-center">
+				<span class=" mt-1 ms-3 z-3"><img class="img-fluid" src="/images/location.png" alt="Location Icon"></span>
+				<h3 class="p-4" style="font-family:'Inter', sans-serif; font-weight:500;">
+					Manukau Institute of Technology <br />
+					Corner of Davies Avenue, <br />
+					Manukau Station Rd
+				</h3>
+			</div>
+			<div class="p-4 d-flex align-items-center">
+				<span class=" mt-1 ms-3 z-3"><img class="img-fluid" src="/images/email.png" alt="Email Icon"></span>
+				<h3 class="p-4" style="font-family:'Inter', sans-serif; font-weight:500; text-decoration: underline;">
+					contactddj@gaas.co.nz
+				</h3>
+			</div>
+			<div class="p-4 d-flex align-items-center">
+				<span class=" mt-1 ms-3 z-3"><img class="img-fluid" src="/images/phone.png" alt="Phone Icon"></span>
+				<h3 class="p-4" style="font-family:'Inter', sans-serif; font-weight:500;">
+					+64 9 123 1233
+				</h3>
+			</div>
+		</div>
+	</div>
+</div>
+
+@* map to locate the address *@
+<div class="row align-content-center p-2 m-2">
+	<iframe class="rounded-5"
+			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3033.091934888452!2d174.87387207580505!3d-36.995153387698416!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6d0d4dc0014191a1%3A0x134d1133e88c7ca5!2sManukau%20Institute%20of%20Technology%20(Manukau%20campus)!5e1!3m2!1sen!2snz!4v1793616433949!5m2!1sen!2snz"
+			width="800" height="400" style="border:0;"
+			allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
+	</iframe>
+</div>
+
+@* FAQ *@
+<div class="m-5" id="faqContainer">
+	<div class="row">
+		<div class="col-12 mb-3">
+			<h1>FAQ</h1>
+			<h2>Answers to your questions can be found here:</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="accordion" id="questions">
+				@* Question 1 *@
+				<div class="accordion-item">
+					<h1 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question1">
+							How does GaaS Work?
+						</button>
+					</h1>
+					<div class="collapse accordion-collapse" id="question1" data-bs-parent="questions">
+						<div class="accordion-body">
+							<p>By filtering for your vehicle's specific fuel type, whether 91, 95, 98, or Diesel, the platform aggregates live pricing data across surrounding gas stations to compare rates instantly, guiding you straight to the cheapest option in your area. </p>
+						</div>
+					</div>
+				</div>
+				@* Question 2 *@
+				<div class="accordion-item">
+					<h1 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question2">
+							Who are we?
+						</button>
+					</h1>
+					<div class="collapse accordion-collapse" id="question2" data-bs-parent="questions">
+						<div class="accordion-body">
+							<p>GaaS (Gas as a Service) is a dedicated web platform designed to help drivers save money at the pump by making fuel prices transparent and accessible.</p>
+						</div>
+					</div>
+				</div>
+				@* Question 3 *@
+				<div class="accordion-item">
+					<h1 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question3">
+							What is fuel type?
+						</button>
+					</h1>
+					<div class="collapse accordion-collapse" id="question3" data-bs-parent="questions">
+						<div class="accordion-body">
+							91 Petrol: Standard unleaded fuel for regular passenger cars.
+							95 Petrol: Premium unleaded for high-performance, turbocharged, or imported engines.
+							98 Petrol: High-octane fuel for sports cars and luxury vehicles requiring maximum power.
+							Diesel: Fuel for commercial vehicles, trucks, and larger SUVs; paid via distance-based Road User Charges (RUC) rather than pump taxes.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="accordion" id="questions_p2">
+				@* Question 4 *@
+				<div class="accordion-item">
+					<h1 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question4">
+							Why choose us?
+						</button>
+					</h1>
+					<div class="collapse accordion-collapse" id="question4" data-bs-parent="questions_4">
+						<div class="accordion-body">
+							Smart Filtering: Find exact pricing for your specific fuel type—whether 91, 95, 98, or Diesel.
+							Location-Based Convenience: Instant radius search shows you the cheapest gas along your route or near your current area.
+						</div>
+					</div>
+				</div>
+				@* Question 5 *@
+				<div class="accordion-item mb-5">
+					<h1 class="accordion-header">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#question5">
+							Is it free?
+						</button>
+					</h1>
+					<div class="collapse accordion-collapse" id="question5" data-bs-parent="questions_pt2">
+						<div class="accordion-body">
+							<p>100% Free & Transparent: Easy, direct access to clear fuel data with no hidden costs.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

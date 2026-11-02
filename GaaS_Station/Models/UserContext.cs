@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GaaS_Station.Models;
 
-public partial class FS2026_Group1_ProjectContext : DbContext
+public partial class UserContext : DbContext
 {
-    public FS2026_Group1_ProjectContext(DbContextOptions<FS2026_Group1_ProjectContext> options)
+    public UserContext(DbContextOptions<UserContext> options)
         : base(options)
     {
     }

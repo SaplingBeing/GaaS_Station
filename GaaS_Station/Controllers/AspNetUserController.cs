@@ -5,9 +5,9 @@ using GaaS_Station.Models;
 
 public class AspNetUserController : Controller
 {
-    private readonly FS2026_Group1_ProjectContext _context;
+    private readonly UserContext _context;
 
-    public AspNetUserController(FS2026_Group1_ProjectContext context)
+    public AspNetUserController(UserContext context)
     {
         _context = context;
     }

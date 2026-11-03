@@ -2,7 +2,15 @@
     ViewData["Title"] = "GaaS";
 }
 <link rel="stylesheet" href="~/css/gaasStyleSheet.css" asp-append-version="true">
+<script src="~/js/Weather.js"></script>
 <div id="map"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="d-inline-flex flex-wrap flex-column p-3 glassBg" id="weatherContainer">
+            <p class="m-0">Loading weather...</p>
+        </div>
+    </div>
+</div>
 <div class="offcanvas offcanvas-start p-3 position-absolute" data-bs-scroll="true" data-bs-backdrop="false" id="offcanvasGaas">
     <button class="offcanvasBtn position-absolute" data-bs-toggle="offcanvas" data-bs-target="#offcanvasGaas">GaaS</button>
     <div class="offcanvas-header">
@@ -73,8 +81,8 @@
         [175.250, -36.400]
     ]
     const map = new maplibregl.Map({
-        container: 'map',
-        style: 'https://tiles.openfreemap.org/styles/liberty',
+        container: "map",
+        style: "https://tiles.openfreemap.org/styles/liberty",
         center: [174.76, -36.85], // lng, lat — Auckland
         zoom: 11,
         attributionControl: false,

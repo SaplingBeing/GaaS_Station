@@ -23,14 +23,14 @@ namespace GaaS_Station.Controllers
         }
 
         public async Task<IActionResult> Index(string searchString)
-        { 
+        {
             var roles = await _roleManager.Roles.ToListAsync();
 
             var query = _userManager.Users.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(s => s.FirstName.Contains(searchString.Trim()) || s.LastName.Contains(searchString.Trim()));
+                query = query.Where(s => s.FirstName.Contains(searchString.Trim()) || s.LastName.Contains(searchString.Trim()) || (s.FirstName + " " + s.LastName).Contains(searchString.Trim()));
             }
             var users = await query.ToListAsync();
             return View(users);

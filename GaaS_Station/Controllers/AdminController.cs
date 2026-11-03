@@ -4,17 +4,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace GaaS_Station.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdminController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -27,10 +30,25 @@ namespace GaaS_Station.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(s => s.FirstName != null && s.FirstName.Contains(searchString));
+                query = query.Where(s => s.FirstName.Contains(searchString.Trim()) || s.LastName.Contains(searchString.Trim()));
             }
             var users = await query.ToListAsync();
             return View(users);
+        }
+        [HttpGet]
+        public string IndexAJAX(string searchString)
+        {
+            // Default to empty string if null so the query doesn't break
+            searchString ??= string.Empty;
+
+            string sql = "SELECT * FROM AspNetUsers WHERE FirstName LIKE @p0 OR LastName LIKE @p0";
+            string wrapString = "%" + searchString + "%";
+
+            // Query your ApplicationDbContext directly using FromSqlRaw
+            List<ApplicationUser> users = _context.Users.FromSqlRaw(sql, wrapString).ToList();
+
+            string json = JsonConvert.SerializeObject(users);
+            return json;
         }
 
         [HttpPost]

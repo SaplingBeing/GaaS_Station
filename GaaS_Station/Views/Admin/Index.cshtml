@@ -7,13 +7,18 @@
 }
 
 <h1 class="mb-3">Manage Users & Roles</h1>
-<div class="row mb-3">
+<div class="row mb-5">
     <form id="searchForm" action="/Admin/Index" method="get">
-        <input type="text" id="searchString" name="searchString" style="width:180px" autocomplete="off"" />
-        <button type="submit" class="btn primaryBtn">Search</button>
-        <a asp-action="Index" class="btn secondaryBtn">Show All</a>
+        <div>
+            <input type="text" id="searchString" name="searchString" style="width:180px" autocomplete="off" onkeyup="XAjaxRequest(this.value)"/>
+            <button type="submit" class="btn primaryBtn">Search</button>
+            <a asp-action="Index" class="btn secondaryBtn">Show All</a>
+        </div>
+        <div id="autoSuggestContainer" style="position:absolute;display:none;">
+        </div>
     </form>
 </div>
+
 <div class="row">
     <!-- Roles Management Column -->
     <div class="col-md-3">
@@ -70,3 +75,28 @@
         </table>
     </div>
 </div>
+<script type="text/javascript">
+    function XAjaxRequest(searchString) {
+        if (searchString.length < 3) {
+            document.getElementById("autoSuggestContainer").innerHTML = "";
+            return;
+        }
+        xmlhttp = new XMLHttpRequest();
+        var url = "/Admin/IndexAJAX?searchString=" + searchString;
+        xmlhttp.open("GET", url, false); 
+        xmlhttp.send(); 
+        document.getElementById("autoSuggestContainer").style.display = "block";
+        document.getElementById("autoSuggestContainer").innerHTML = "";
+        var messageObject = JSON.parse(xmlhttp.responseText);
+        var autoSuggestions = "";
+        for (var i = 0; i < messageObject.length; i++) {
+            var displayName = messageObject[i].Name || (messageObject[i].FirstName + " " + messageObject[i].LastName);
+            autoSuggestions +=
+                "<input type=\"button\" value=\"" + displayName + "\" "
+                + "onclick=\"document.getElementById('searchString').value = this.value; document.getElementById('searchForm').submit();\" "
+                + "style =\"width: 280px\" />";
+            autoSuggestions += "<br />";
+        }
+        document.getElementById("autoSuggestContainer").innerHTML = autoSuggestions;
+    }
+</script> 

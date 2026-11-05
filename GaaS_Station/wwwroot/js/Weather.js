@@ -24,10 +24,18 @@ async function getWeatherData() {
 function displayWeather(weatherData) {
     const weatherContainer = document.querySelector("#weatherContainer");
     weatherContainer.innerHTML = `
-        <h2 class="fw-bold m-0">${weatherData.name}<span>${getWeatherIcon(weatherData)}</span></h2>
-        <p class="m-0"><span class="fw-bold">Weather:</span> <span class="fst-italic">${weatherData.weather[0].description}</span></p>
-        <p class="m-0"><span class="fw-bold">Temperature:</span> <span class="fst-italic">${weatherData.main.temp}°C</span></p>
-        <p class="m-0"><span class="fw-bold">Humidity:</span> <span class="fst-italic">${weatherData.main.humidity}%</span></p>
+        <div class="row">
+            <div class="col-4">
+                 <p class="text-capitalize fw-bold m-0">${weatherData.weather[0].main}</p>
+                 <h1 class="text-center m-0" id="weatherIcon">${getWeatherIcon(weatherData)}</h1>
+            </div>
+            <div class="col-8 d-flex flex-column justify-content-center">
+                <p class="fst-italic m-0"><img src="/images/thermometer-half.svg" alt="Thermometer Icon">${weatherData.main.temp}°C</p>
+                <p class="fst-italic m-0"><img src="/images/moisture.svg" alt="Humidity Icon"> ${weatherData.main.humidity}%</p>
+                <p class="m-0"><img src="/images/geo-alt.svg" alt="Location Icon"> ${weatherData.name}</p>
+            </div>
+        </div>
+     
     `;
 }
 function getWeatherIcon(weatherData) {

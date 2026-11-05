@@ -47,6 +47,16 @@
             <a class="btn w-100 mb-3 p-2 secondaryBtn"><h2 class="m-0" id="googleBtn">Google</h2></a>
             <button id="registerSubmit" type="submit" class="w-100 btn p-2 primaryBtn"><h2 class="m-0">Create account</h2></button>
         </form>
+        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+            <div>
+                <p>
+                    @foreach (var provider in Model.ExternalLogins!)
+                    {
+                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                    }
+                </p>
+            </div>
+        </form>
     </div>
     @* <div class="col-md-6 col-md-offset-2">
         <section>

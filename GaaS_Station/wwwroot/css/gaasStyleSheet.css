@@ -56,6 +56,9 @@
     right: 0%;
     margin-right: 12px;
 }
+#weatherIcon {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+}
 /*Media query*/
 /*Small screen*/
 @media screen and (max-width: 576px) {

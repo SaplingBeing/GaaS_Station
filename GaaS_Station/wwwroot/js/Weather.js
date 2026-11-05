@@ -35,7 +35,6 @@ function displayWeather(weatherData) {
                 <p class="m-0"><img src="/images/geo-alt.svg" alt="Location Icon"> ${weatherData.name}</p>
             </div>
         </div>
-     
     `;
 }
 function getWeatherIcon(weatherData) {

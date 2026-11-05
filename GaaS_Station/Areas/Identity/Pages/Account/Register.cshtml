@@ -6,7 +6,7 @@
 }
 <img src="~/images/bg2.png" class="bgImage">
 <div class="row vh-100">
-    <div class="col-sm-5 d-grid align-items-center p-5 glassBg regLogContainer">
+    <div class="col-sm-5 d-flex flex-column justify-content-center p-5 glassBg regLogContainer">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <a class="text-reset" asp-area="" asp-controller="Home" asp-action="Index"><h2>Return home</h2></a>
             <h1>Create an account</h1>
@@ -15,14 +15,14 @@
             <div class="row">
                 <div class="col-6">
                     <div class="form-floating mb-3">
-                        <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="First Name" required/>
+                        <input asp-for="Input.FirstName" class="form-control" aria-required="true" placeholder="First Name" required />
                         <label asp-for="Input.FirstName">First Name</label>
                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="form-floating mb-3">
-                        <input asp-for="Input.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="LastName" required/>
+                        <input asp-for="Input.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="LastName" required />
                         <label asp-for="Input.LastName">Last Name</label>
                         <span asp-validation-for="Input.LastName" class="text-danger"></span>
                     </div>
@@ -43,51 +43,20 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <p class="d-flex justify-content-center align-items-center">Or register with</p>
-            <a class="btn w-100 mb-3 p-2 secondaryBtn"><h2 class="m-0" id="googleBtn">Google</h2></a>
-            <button id="registerSubmit" type="submit" class="w-100 btn p-2 primaryBtn"><h2 class="m-0">Create account</h2></button>
+            <button id="registerSubmit" type="submit" class="w-100 btn p-1 mb-3 primaryBtn fontSizeLg">Create account</button>
         </form>
+        <p class="d-flex justify-content-center align-items-center">Or register with</p>
         <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
             <div>
                 <p>
                     @foreach (var provider in Model.ExternalLogins!)
                     {
-                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                        <button type="submit" class="btn w-100 p-1 secondaryBtn fontSizeLg" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                     }
                 </p>
             </div>
         </form>
     </div>
-    @* <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div> *@
 </div>
 
 @section Scripts {

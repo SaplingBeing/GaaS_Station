@@ -6,14 +6,14 @@
 }
 <img src="~/images/bg2.png" class="bgImage">
 <div class="row vh-100">
-    <div class="col-sm-5 d-grid align-items-center p-5 glassBg regLogContainer">
+    <div class="col-sm-5 d-flex flex-column justify-content-center p-5 glassBg regLogContainer">
         <div class="row">
             <h1>Register Confirmation</h1>
             @{
                 if (@Model.DisplayConfirmAccountLink)
                 {
                     <p> This app does not currently have a real email sender registered.</p>
-                    <a id="confirm-link" class="w-100 btn p-2 primaryBtn" href="@Model.EmailConfirmationUrl"><h2 class="m-0">Confirm your account</h2></a>
+                    <a id="confirm-link" class="w-100 btn p-1 primaryBtn fontSizeLg" href="@Model.EmailConfirmationUrl">Confirm your account</a>
                 }
                 else
                 {

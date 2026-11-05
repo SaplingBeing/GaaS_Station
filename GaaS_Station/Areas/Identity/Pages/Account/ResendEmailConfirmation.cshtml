@@ -6,10 +6,10 @@
 }
 <img src="~/images/bg2.png" class="bgImage">
 <div class="row vh-100">
-    <div class="col-sm-5 d-grid align-items-center p-5 glassBg regLogContainer">
+    <div class="col-sm-5 d-flex flex-column justify-content-center p-5 glassBg regLogContainer">
         <form method="post">
             <a class="text-reset" asp-page="./Login"><h2>Return to Login</h2></a>
-            <h1>Resend email confirmation</h1>
+            <h1>Email confirmation</h1>
             <p>Enter your email.</p>
             <div asp-validation-summary="All" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -17,7 +17,7 @@
                 <label asp-for="Input.Email" class="form-label"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <button type="submit" class="w-100 btn p-2 primaryBtn"><h2 class="m-0">Resend</h2></button>
+            <button type="submit" class="w-100 btn p-1 primaryBtn fontSizeLg">Resend</button>
         </form>
     </div>
 </div>

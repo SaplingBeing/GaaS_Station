@@ -6,11 +6,11 @@
 }
 <img src="~/images/bg2.png" class="bgImage">
 <div class="row vh-100">
-    <div class="col-sm-5 d-grid align-items-center p-5 glassBg regLogContainer">
+    <div class="col-sm-5 d-flex flex-column justify-content-center p-5 glassBg regLogContainer">
         <div class="row">
             <h1>Confirm email</h1>
-            <partial name="_StatusMessage" model="Model.StatusMessage"/>
-            <a class="btn w-100 mb-3 p-2 primaryBtn" asp-page="./Login"><h2 class="m-0">Return to login</h2></a>
+            <partial name="_StatusMessage" model="Model.StatusMessage" />
+            <a class="btn w-100 mb-3 p-1 primaryBtn fontSizeLg" asp-page="./Login">Return to login</a>
         </div>
     </div>
 </div>

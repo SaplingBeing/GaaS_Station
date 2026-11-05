@@ -37,6 +37,9 @@ p, a, .form-select, .form-control, .accordion-body {
     font-family: var(--fontBody) !important;
     font-size: var(--fontSm) !important;
 }
+.fontSizeSm{
+    font-size: var(--fontSm);
+}
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--fontHeading);
@@ -46,8 +49,8 @@ h1 {
     font-size: var(--fontXlg);
 }
 
-h2 {
-    font-size: var(--fontLg);
+h2, .fontSizeLg {
+    font-size: var(--fontLg) !important;
 }
 
 h3 {
@@ -84,6 +87,7 @@ h3 {
 }
 /*Buttons*/
 .primaryBtn, .secondaryBtn {
+    font-family: var(--fontBody);
     color: var(--textColour) !important;
     border-radius: 24px;
 }
@@ -261,10 +265,6 @@ th{
 
 .regLogContainer {
     border-radius: 0px 24px 24px 0px;
-}
-
-#googleBtn {
-    font-family: var(--fontBody) !important
 }
 
 .offcanvas {

@@ -1,84 +1,186 @@
-﻿@{ViewData["Title"] = "Home Page";}
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
 <link rel="stylesheet" href="~/css/homeStyleSheet.css" asp-append-version="true">
 @*Background image*@
-<img src="~/images/bg.jpg" alt="Background Image" id="backgroundImg"/>
+<img src="~/images/bg.jpg" alt="Background Image" id="backgroundImg" />
 @*GaaS search bar*@
 <form class="d-flex justify-content-center" id="searchContainer" method="POST">
-    <div class="d-inline-block p-5 m-3 glassBg">
-        <div class="row p-0">
-            <div class="col-12 p-0">
-                <h1 class="text-center mb-3">Find Auckland's<span class="fst-italic highlight"> Cheapest Gas</span></h1>
-            </div>
-        </div>
-        <div class="row p-0">
-            <div class="col-12 p-1 position-relative">
-                <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/geo-alt.svg" alt="Location Icon"></span>
-                <input type="text" class="form-control p-2 ps-5" id="locationTb" placeholder="Enter location...">
-            </div>
-        </div>
-        <div class="row p-0">
-            <div class="col-sm-5 p-1 position-relative">
-                <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/shop.svg" alt="Station Icon"></span>
-                <select class="form-select p-2 ps-5">
-                    <option selected>Station</option>
-                    <option value="BP">BP</option>
-                    <option value="Mobil">Mobil</option>
-                    <option value="Z-Energy">Z Energy</option>
-                    <option value="Gull">Gull</option>
-                </select>
-            </div>
-            <div class="col-sm-5 p-1 position-relative">
-                <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/fuel-pump.svg" alt="Fuel Type Icon"></span>
-                <select class="form-select p-2 ps-5">
-                    <option selected class="dropdown-item">Fuel Type</option>
-                    <option value="91">91</option>
-                    <option value="95">95</option>
-                    <option value="98">98</option>
-                    <option value="Disel">Diesel</option>
-                </select>
-            </div>
-            <div class="col-sm-2 p-1">
-                <button type="submit" class="btn d-inline-flex align-items-center justify-content-center w-100 p-2 primaryBtn"><img src="/images/search.svg" alt="Search Icon">Search</button>
-            </div>
-        </div>
-    </div>
-</form> 
+	<div class="d-inline-block p-5 m-3 glassBg">
+		<div class="row p-0">
+			<div class="col-12 p-0">
+				<h1 class="text-center mb-3">Find Auckland's<span class="fst-italic highlight"> Cheapest Gas</span></h1>
+			</div>
+		</div>
+		<div class="row p-0">
+			<div class="col-12 p-1 position-relative">
+				<span class="position-absolute mt-1 ms-3 z-3"><img src="/images/geo-alt.svg" alt="Location Icon"></span>
+				<input type="text" class="form-control p-2 ps-5" id="locationTb" placeholder="Enter location...">
+			</div>
+		</div>
+		<div class="row p-0">
+			<div class="col-sm-5 p-1 position-relative">
+				<span class="position-absolute mt-1 ms-3 z-3"><img src="/images/shop.svg" alt="Station Icon"></span>
+				<select class="form-select p-2 ps-5">
+					<option selected>Station</option>
+					<option value="BP">BP</option>
+					<option value="Mobil">Mobil</option>
+					<option value="Z-Energy">Z Energy</option>
+					<option value="Gull">Gull</option>
+				</select>
+			</div>
+			<div class="col-sm-5 p-1 position-relative">
+				<span class="position-absolute mt-1 ms-3 z-3"><img src="/images/fuel-pump.svg" alt="Fuel Type Icon"></span>
+				<select class="form-select p-2 ps-5">
+					<option selected class="dropdown-item">Fuel Type</option>
+					<option value="91">91</option>
+					<option value="95">95</option>
+					<option value="98">98</option>
+					<option value="Disel">Diesel</option>
+				</select>
+			</div>
+			<div class="col-sm-2 p-1">
+				<button type="submit" class="btn d-inline-flex align-items-center justify-content-center w-100 p-2 primaryBtn"><img src="/images/search.svg" alt="Search Icon">Search</button>
+			</div>
+		</div>
+	</div>
+</form>
+
+@* favourites gas stations, only visible for logged in users *@
+
+@* to implement later *@
+@* 
+favourites for signed users
+@if (User.IsInRole("User"))
+{
+
+} *@
+
+<div class="row">
+	<div class="col-12 text-center p-3 mb-3">
+		<h1><b>Favourites</b></h1>
+	</div>
+</div>
+
+<div class="container my-4">
+
+
+	<div class="row row-cols-2 row-cols-md-2 g-5">
+
+		<div class="p-2 container-fluid glassBg">
+			<div class="row">
+				<div class="col-2">
+					<img src="~/images/zenergyLogo.png" alt="Z Energy Logo" />
+				</div>
+				<div class="col-2">
+					<h3>91</h3>
+					<h3>95</h3>
+					<h3>Disel</h3>
+				</div>
+				<div class="col-8 position-relative">
+					<h3 class="fw-bold">Z Energy Hunter's Corner</h3>
+					<p>72-76 East Tamaki Road, Papatoetoe, Auckland 2025</p>
+					<button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></button>
+				</div>
+			</div>
+		</div>
+
+		<div class="p-3 container-fluid glassBg">
+			<div class="row">
+				<div class="col-2">
+					<img src="~/images/zenergyLogo.png" alt="Z Energy Logo" />
+				</div>
+				<div class="col-2">
+					<h3>91</h3>
+					<h3>95</h3>
+					<h3>Disel</h3>
+				</div>
+				<div class="col-8 position-relative">
+					<h3 class="fw-bold">Z Energy Hunter's Corner</h3>
+					<p>72-76 East Tamaki Road, Papatoetoe, Auckland 2025</p>
+					<button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></button>
+				</div>
+			</div>
+		</div>
+
+		<div class="p-3 container-fluid glassBg">
+			<div class="row">
+				<div class="col-2">
+					<img src="~/images/zenergyLogo.png" alt="Z Energy Logo" />
+				</div>
+				<div class="col-2">
+					<h3>91</h3>
+					<h3>95</h3>
+					<h3>Disel</h3>
+				</div>
+				<div class="col-8 position-relative">
+					<h3 class="fw-bold">Z Energy Hunter's Corner</h3>
+					<p>72-76 East Tamaki Road, Papatoetoe, Auckland 2025</p>
+					<button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></button>
+				</div>
+			</div>
+		</div>
+
+		<div class="p-3 container-fluid glassBg">
+			<div class="row">
+				<div class="col-2">
+					<img src="~/images/zenergyLogo.png" alt="Z Energy Logo" />
+				</div>
+				<div class="col-2">
+					<h3>91</h3>
+					<h3>95</h3>
+					<h3>Disel</h3>
+				</div>
+				<div class="col-8 position-relative">
+					<h3 class="fw-bold">Z Energy Hunter's Corner</h3>
+					<p>72-76 East Tamaki Road, Papatoetoe, Auckland 2025</p>
+					<button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+ 
+</div>
+
 @* Auckland POI *@
 <div class="d-inline-block overflow-hidden p-0 m-5 glassBg" id="poiContainer">
-    <div class="row">
-        <div class="col-sm-7 d-flex position-relative justify-content-end p-0">
-            <img src="/images/sky-tower.jpg" alt="Sky Tower" class="featuredImg z-3" id="img1">
-            <img src="/images/winter-garden.jpeg" alt="Winter Garden" class="featuredImg z-2" id="img2">
-            <img src="/images/waitakere-ranges.png" alt="Waitakere Ranges" class="featuredImg z-1" id="img3">
-        </div>
-        <div class="col-sm-5 order-sm-first p-5">
-            <h1><span class="fst-italic">Travel</span> with <span class="highlight">GaaS</span></h1>
-            <button class="btn w-50 p-2 secondaryBtn">Explore</button>
-        </div>
-    </div>    
+	<div class="row">
+		<div class="col-sm-7 d-flex position-relative justify-content-end p-0">
+			<img src="/images/sky-tower.jpg" alt="Sky Tower" class="featuredImg z-3" id="img1">
+			<img src="/images/winter-garden.jpeg" alt="Winter Garden" class="featuredImg z-2" id="img2">
+			<img src="/images/waitakere-ranges.png" alt="Waitakere Ranges" class="featuredImg z-1" id="img3">
+		</div>
+		<div class="col-sm-5 order-sm-first p-5">
+			<h1><span class="fst-italic">Travel</span> with <span class="highlight">GaaS</span></h1>
+			<a class="btn-link" asp-controller="Auckland" asp-action="Index">
+				<button class="btn w-50 secondaryBtn">Explore</button>
+			</a>
+		</div>
+	</div>
 </div>
+
 @* Meet the Team *@
 <div class="row">
-    <div class="col-12 text-center mb-3">
-        <h1><span class="fst-italic">Meet</span> the <span class="highlight">Team</span></h1>
-        <h2>We’re a team of developers and data enthusiasts on a mission to make fuel prices transparent and accessible for everyone in Auckland.</h2>
-    </div>
+	<div class="col-12 text-center mb-3">
+		<h1><span class="fst-italic">Meet</span> the <span class="highlight">Team</span></h1>
+		<h2>We’re a team of developers and data enthusiasts on a mission to make fuel prices transparent and accessible for everyone in Auckland.</h2>
+	</div>
 </div>
 <div class="d-flex justify-content-center mb-5">
-    <div class="row">
-        <div class="col-sm-4 position-relative mb-3">
-            <img src="/images/Dara.png" alt="Dara" class="mx-auto teamImg">
-            <h1 class="position-absolute top-0 start-50 translate-middle-x mt-5 name">Dara</h1>
-        </div>
-        <div class="col-sm-4 position-relative mb-3">
-            <img src="/images/Dustin.png" alt="Dustin" class="mx-auto teamImg">
-            <h1 class="position-absolute top-0 start-50 translate-middle-x mt-5 name">Dustin</h1>
-        </div>
-        <div class="col-sm-4 position-relative">
-            <img src="/images/Justin.png" alt="Justin" class="mx-auto teamImg">
-            <h1 class="position-absolute top-0 start-50 translate-middle-x mt-5 name">Justin</h1>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-sm-4 position-relative mb-3">
+			<img src="/images/Dara.png" alt="Dara" class="mx-auto teamImg">
+			<h1 class="position-absolute top-0 start-50 translate-middle-x mt-5 name">Dara</h1>
+		</div>
+		<div class="col-sm-4 position-relative mb-3">
+			<img src="/images/Dustin.png" alt="Dustin" class="mx-auto teamImg">
+			<h1 class="position-absolute top-0 start-50 translate-middle-x mt-5 name">Dustin</h1>
+		</div>
+		<div class="col-sm-4 position-relative">
+			<img src="/images/Justin.png" alt="Justin" class="mx-auto teamImg">
+			<h1 class="position-absolute top-0 start-50 translate-middle-x mt-5 name">Justin</h1>
+		</div>
+	</div>
 </div>
 @* FAQ *@
 <div class="m-5" id="faqContainer">

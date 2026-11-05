@@ -37,7 +37,8 @@ p, a, .form-select, .form-control, .accordion-body {
     font-family: var(--fontBody) !important;
     font-size: var(--fontSm) !important;
 }
-.fontSizeSm{
+
+.fontSizeSm {
     font-size: var(--fontSm);
 }
 
@@ -77,7 +78,7 @@ h3 {
     background-color: transparent !important;
 }
 
-.glassBg, .form-control, .form-select, .dropdown-menu, .tbData, #offcanvasGaas {
+.glassBg, .form-control, .form-select, .tbData, #offcanvasGaas {
     background-color: rgba(255, 255, 255, 0.2);
     border-top: 1.5px solid var(--white);
     border-bottom: 0.5px solid var(--white);
@@ -85,6 +86,7 @@ h3 {
     box-shadow: 0 1px 4px 0 var(--shadowColour);
     backdrop-filter: blur(10px);
 }
+
 /*Buttons*/
 .primaryBtn, .secondaryBtn {
     font-family: var(--fontBody);
@@ -92,9 +94,14 @@ h3 {
     border-radius: 24px;
 }
 
-    .primaryBtn, .primaryBtn:hover {
-        background-color: var(--primaryColour) !important;
-        box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
+.primaryBtn {
+    background-color: var(--primaryColour) !important;
+    box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
+    transition: scale 0.2s ease-in-out;
+}
+
+    .primaryBtn:hover {
+        scale: 0.90;
     }
 
 .secondaryBtn {
@@ -213,7 +220,7 @@ th, td {
     background-color: transparent !important;
 }
 
-th{
+th {
     border: none;
 }
 /*Media query*/

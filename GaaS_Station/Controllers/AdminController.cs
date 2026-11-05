@@ -24,8 +24,6 @@ namespace GaaS_Station.Controllers
 
         public async Task<IActionResult> Index(string searchString)
         {
-            var roles = await _roleManager.Roles.ToListAsync();
-
             var query = _userManager.Users.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchString))
@@ -33,52 +31,39 @@ namespace GaaS_Station.Controllers
                 query = query.Where(s => s.FirstName.Contains(searchString.Trim()) || s.LastName.Contains(searchString.Trim()) || (s.FirstName + " " + s.LastName).Contains(searchString.Trim()));
             }
             var users = await query.ToListAsync();
-            return View(users);
+
+            var viewModelList = new List<AdminVM>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                viewModelList.Add(new AdminVM
+                {
+                    Id = user.Id,
+                    Email = user.Email ?? string.Empty,
+                    UserName = user.UserName ?? string.Empty,
+                    FirstName = user.FirstName ?? string.Empty,
+                    LastName = user.LastName ?? string.Empty,
+                    UserRoles = roles
+                });
+            }
+            return View(viewModelList);
         }
+
         [HttpGet]
         public string IndexAJAX(string searchString)
         {
-            // Default to empty string if null so the query doesn't break
             searchString ??= string.Empty;
 
             string sql = "SELECT * FROM AspNetUsers WHERE FirstName LIKE @p0 OR LastName LIKE @p0";
             string wrapString = "%" + searchString + "%";
 
-            // Query your ApplicationDbContext directly using FromSqlRaw
             List<ApplicationUser> users = _context.Users.FromSqlRaw(sql, wrapString).ToList();
 
             string json = JsonConvert.SerializeObject(users);
             return json;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateRole(string roleName)
-        {
-            if (!string.IsNullOrEmpty(roleName))
-            {
-                var result = await _roleManager.CreateAsync(new IdentityRole(roleName));
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-            }
-            return BadRequest("Role creation failed");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AssignRoleToUser(string userId, string roleName)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user != null)
-            {
-                var result = await _userManager.AddToRoleAsync(user, roleName);
-                if (result.Succeeded)
-                {
-                    return Ok($"Assigned {roleName} to user.");
-                }
-            }
-            return NotFound("User not found or assignment failed.");
-        }
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrEmpty(id)) return NotFound();
@@ -89,7 +74,7 @@ namespace GaaS_Station.Controllers
             var userRoles = await _userManager.GetRolesAsync(user);
             var allRoles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
 
-            var model = new AdminVM
+            var viewModel = new AdminVM
             {
                 Id = user.Id,
                 Email = user.Email ?? string.Empty,
@@ -100,36 +85,26 @@ namespace GaaS_Station.Controllers
                 UserRoles = userRoles
             };
 
-            return View(model);
+            return View(viewModel);
         }
 
-        // EDIT USER: POST Handler (Updates Details & Roles)
+        // EDIT user
         [HttpPost]
-        public async Task<IActionResult> Edit(AdminVM model, List<string> selectedRoles)
+        public async Task<IActionResult> Edit(AdminVM viewModel, List<string> selectedRoles)
         {
-            var user = await _userManager.FindByIdAsync(model.Id);
+            var user = await _userManager.FindByIdAsync(viewModel.Id);
             if (user == null) return NotFound();
 
-            // Update basic properties
-            user.Email = model.Email;
-            user.UserName = model.UserName;
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
+            user.Email = viewModel.Email;
+            user.UserName = viewModel.UserName;
+            user.FirstName = viewModel.FirstName;
+            user.LastName = viewModel.LastName;
+            await _userManager.UpdateAsync(user);
 
-            var result = await _userManager.UpdateAsync(user);
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                model.AllRoles = await _roleManager.Roles.Select(r => r.Name).ToListAsync()!;
-                return View(model);
-            }
-
-            // Sync User Roles
+            // Sync user roles
             var currentRoles = await _userManager.GetRolesAsync(user);
-            selectedRoles ??= new List<string>(); // Handle empty selection
+
+            selectedRoles ??= new List<string>();
 
             var rolesToAdd = selectedRoles.Except(currentRoles);
             var rolesToRemove = currentRoles.Except(selectedRoles);
@@ -140,7 +115,7 @@ namespace GaaS_Station.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // DELETE USER
+        // DELETE user
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -148,10 +123,8 @@ namespace GaaS_Station.Controllers
             if (user != null)
             {
                 var result = await _userManager.DeleteAsync(user);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+                return RedirectToAction(nameof(Index));
+
             }
             return NotFound("User not found");
         }

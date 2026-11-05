@@ -1,16 +1,14 @@
-﻿@model IEnumerable<GaaS_Station.Data.ApplicationUser>
-@using Microsoft.AspNetCore.Identity
-@inject UserManager<GaaS_Station.Data.ApplicationUser> UserManager
+﻿@model IEnumerable<GaaS_Station.ViewModel.AdminVM>
 
 @{
     ViewData["Title"] = "Manage Users";
 }
 
-<h1 class="mb-3">Manage Users & Roles</h1>
+<h1 class="mb-3">Manage Users</h1>
 <div class="row mb-5">
     <form id="searchForm" action="/Admin/Index" method="get">
         <div>
-            <input type="text" id="searchString" name="searchString" style="width:180px" autocomplete="off" onkeyup="XAjaxRequest(this.value)"/>
+            <input type="text" id="searchString" name="searchString" style="width:180px" autocomplete="off" onkeyup="XAjaxRequest(this.value)" />
             <button type="submit" class="btn primaryBtn">Search</button>
             <a asp-action="Index" class="btn secondaryBtn">Show All</a>
         </div>
@@ -20,21 +18,7 @@
 </div>
 
 <div class="row">
-    <!-- Roles Management Column -->
-    <div class="col-md-3">
-        <div class="p-3 glassBg">
-            <form asp-action="CreateRole" method="post">
-                <div class="mb-3">
-                    <label for="roleName" class="form-label fw-bold">Role Name</label>
-                    <input type="text" name="roleName" id="roleName" class="form-control" placeholder="Enter role name..." required />
-                </div>
-                <button type="submit" class="btn w-100 primaryBtn">Add Role</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Users List Column -->
-    <div class="col-md-9">
+    <div class="col-md-12">
         <table class="table glassBg">
             <thead>
                 <tr>
@@ -49,16 +33,15 @@
             <tbody>
                 @foreach (var user in Model)
                 {
-                    var roles = await UserManager.GetRolesAsync(user);
                     <tr class="glassBg">
                         <td>@user.Id</td>
                         <td>@user.Email</td>
                         <td>@user.FirstName</td>
                         <td>@user.LastName</td>
                         <td>
-                            @foreach (var role in roles)
+                            @foreach (var role in user.UserRoles)
                             {
-                                <li>@role</li>
+                                <span class="badge text-bg-primary">@role</span>
                             }
                         </td>
                         <td class="text-end">
@@ -83,8 +66,8 @@
         }
         xmlhttp = new XMLHttpRequest();
         var url = "/Admin/IndexAJAX?searchString=" + searchString;
-        xmlhttp.open("GET", url, false); 
-        xmlhttp.send(); 
+        xmlhttp.open("GET", url, false);
+        xmlhttp.send();
         document.getElementById("autoSuggestContainer").style.display = "block";
         document.getElementById("autoSuggestContainer").innerHTML = "";
         var messageObject = JSON.parse(xmlhttp.responseText);

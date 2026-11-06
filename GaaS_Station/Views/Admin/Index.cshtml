@@ -1,63 +1,104 @@
-﻿@model IEnumerable<GaaS_Station.ViewModel.AdminVM>
+﻿@model IPagedList<GaaS_Station.ViewModel.AdminVM>
+@using X.PagedList.Mvc.Core;
+
+@using X.PagedList;
 
 @{
     ViewData["Title"] = "Manage Users";
 }
-
-<h1 class="mb-3">Manage Users</h1>
-<div class="row mb-5">
-    <form id="searchForm" action="/Admin/Index" method="get">
-        <div>
-            <input type="text" id="searchString" name="searchString" style="width:180px" autocomplete="off" onkeyup="XAjaxRequest(this.value)" />
-            <button type="submit" class="btn primaryBtn">Search</button>
-            <a asp-action="Index" class="btn secondaryBtn">Show All</a>
+<style>
+    #backgroundImg {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        object-fit: cover;
+        z-index: 0;
+    }
+</style>
+<img src="~/images/bg4.png" alt="Background Image" id="backgroundImg" />
+<form id="searchForm" action="/Admin/Index" method="get">
+    <div class="row gy-5 mb-5">
+        <div class="col-md-4 position-relative">
+            <h1 class="mb-3">Manage Users</h1>
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchString" name="searchString" placeholder="Enter name..." autocomplete="off" onkeyup="XAjaxRequest(this.value)">
+                <button type="submit" class="btn input-group-btn d-inline-flex align-items-center justify-content-center primaryBtnGroup"><img src="/images/search.svg" alt="Search Icon"></button>
+                <a asp-action="Index" class="btn input-group-btn d-inline-flex align-items-center justify-content-center glassBg">Show All</a>
+            </div>
+            <div class="position-absolute z-3" id="autoSuggestContainer">
+            </div>
         </div>
-        <div id="autoSuggestContainer" style="position:absolute;display:none;">
-        </div>
-    </form>
-</div>
+    </div>
+</form>
 
 <div class="row">
-    <div class="col-md-12">
-        <table class="table glassBg">
-            <thead>
-                <tr>
-                    <th>User ID</th>
-                    <th>Username / Email</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Roles</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
-                    <tr class="glassBg">
-                        <td>@user.Id</td>
-                        <td>@user.Email</td>
-                        <td>@user.FirstName</td>
-                        <td>@user.LastName</td>
-                        <td>
-                            @foreach (var role in user.UserRoles)
-                            {
-                                <span class="badge text-bg-primary">@role</span>
-                            }
-                        </td>
-                        <td class="text-end">
-                            <a asp-action="Edit" asp-route-id="@user.Id" class="btn secondaryBtn me-1">
-                                Edit
-                            </a>
-                            <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                                <button type="submit" class="btn primaryBtn">Delete</button>
-                            </form>
-                        </td>
+    <div class="col-12">
+        <div class="table-responsive-lg">
+            <table class="table glassBg">
+                <thead>
+                    <tr class="text-center">
+                        <th style="width:20%;">User ID</th>
+                        <th style="width:25%;">Email Address</th>
+                        <th class="text-nowrap" style="width:15%;">First Name</th>
+                        <th class="text-nowrap" style="width:15%;">Last Name</th>
+                        <th>Roles</th>
+                        <th>Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="align-middle text-truncate glassBg">@user.Id</td>
+                            <td class="align-middle glassBg">@user.Email</td>
+                            <td class="align-middle glassBg">@user.FirstName</td>
+                            <td class="align-middle glassBg">@user.LastName</td>
+                            <td class="align-middle text-nowrap glassBg">
+                                @foreach (var role in user.UserRoles)
+                                {
+                                    var roleBadge = role.ToLower()
+                                    switch
+                                    {
+                                        "admin" => "text-bg-danger",
+                                        "user" => "text-bg-primary",
+                                        "tester" => "text-bg-success"
+                                    };
+                                    <span class="badge @roleBadge">@role</span>
+                                }
+                            </td>
+                            <td class="text-nowrap text-end glassBg">
+                                <a asp-action="Edit" asp-route-id="@user.Id" class="btn me-1 editBtn">
+                                    Edit
+                                </a>
+                                <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                    <button type="submit" class="btn errorBtn"><img src="~/images/trash3.svg" alt="Delete" class="svgWhite"></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-12 d-flex justify-content-center mb-5">
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { Page = page }),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+        })
+    </div>
+</div>
+
 <script type="text/javascript">
     function XAjaxRequest(searchString) {
         if (searchString.length < 3) {
@@ -72,13 +113,12 @@
         document.getElementById("autoSuggestContainer").innerHTML = "";
         var messageObject = JSON.parse(xmlhttp.responseText);
         var autoSuggestions = "";
-        for (var i = 0; i < messageObject.length; i++) {
-            var displayName = messageObject[i].Name || (messageObject[i].FirstName + " " + messageObject[i].LastName);
+        var limit = messageObject.slice(0, 3);
+        for (var i = 0; i < limit.length; i++) {
+            var displayName = limit[i].Name || (limit[i].FirstName + " " + limit[i].LastName);
             autoSuggestions +=
-                "<input type=\"button\" value=\"" + displayName + "\" "
-                + "onclick=\"document.getElementById('searchString').value = this.value; document.getElementById('searchForm').submit();\" "
-                + "style =\"width: 280px\" />";
-            autoSuggestions += "<br />";
+                `<input type="button" class=" p-2 suggestBtn" value="${displayName}" onclick="document.getElementById('searchString').value = this.value; document.getElementById('searchForm').submit();">`
+            autoSuggestions += "<br>"
         }
         document.getElementById("autoSuggestContainer").innerHTML = autoSuggestions;
     }

@@ -11,7 +11,7 @@
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link w-100 logBtn">Logout</button>
+                <button type="submit" class="w-100 logBtn">Logout</button>
             </form>
         </li>
     }
@@ -20,8 +20,8 @@
         <li class="nav-item">
             <a id="registerLink" class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link logBtn" asp-area="Identity" asp-page="/Account/Login"><img src="/images/user.svg" alt="User Icon" class="icon">Login</a>
+        <li class="nav-item d-inline-flex">
+            <a class="w-100 logBtn" asp-area="Identity" asp-page="/Account/Login"><img src="/images/user.svg" alt="User Icon" class="icon">Login</a>
         </li>
     }
 </ul>

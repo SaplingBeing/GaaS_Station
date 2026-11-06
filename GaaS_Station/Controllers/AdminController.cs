@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using X.PagedList.Extensions;
 
 namespace GaaS_Station.Controllers
 {
@@ -22,7 +23,7 @@ namespace GaaS_Station.Controllers
             _roleManager = roleManager;
         }
 
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int? page)
         {
             var query = _userManager.Users.AsQueryable();
 
@@ -47,7 +48,10 @@ namespace GaaS_Station.Controllers
                     UserRoles = roles
                 });
             }
-            return View(viewModelList);
+            int pageSize = 6;
+            int pageNumber = page ?? 1;
+            var pagedList = viewModelList.ToPagedList(pageNumber, pageSize);
+            return View(pagedList);
         }
 
         [HttpGet]

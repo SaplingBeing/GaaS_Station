@@ -14,6 +14,7 @@
     --primaryColour: #FFA159;
     --shadowColour: #8C8780;
     --white: #F5F5F5;
+    --error: #DC3545;
     /*Font sizes*/
     --fontSm: clamp(0.9rem, 2vw, 1rem);
     --fontMd: clamp(1rem, 2vw, 1.15rem);
@@ -31,6 +32,10 @@ html, body {
 html {
     position: relative;
     min-height: 100%;
+}
+/*SVG*/
+.svgWhite {
+    filter: invert(100%);
 }
 /*Typography*/
 p, a, .form-select, .form-control, .accordion-body {
@@ -54,7 +59,7 @@ h2, .fontSizeLg {
     font-size: var(--fontLg) !important;
 }
 
-h3 {
+h3, th {
     font-size: var(--fontMd);
 }
 
@@ -70,9 +75,9 @@ h3 {
     color: var(--textColour);
 }
 
-.form-control {
+/*.form-control {
     border-radius: 30px !important;
-}
+}*/
 
 .form-floating > label::after {
     background-color: transparent !important;
@@ -88,14 +93,21 @@ h3 {
 }
 
 /*Buttons*/
-.primaryBtn, .secondaryBtn {
+.primaryBtn, .secondaryBtn, .errorBtn, .editBtn {
     font-family: var(--fontBody);
-    color: var(--textColour) !important;
+    font-size: var(--fontSm) !important;
     border-radius: 24px;
 }
 
-.primaryBtn {
+.primaryBtn, .secondaryBtn, .editBtn {
+    color: var(--textColour) !important;
+}
+
+.primaryBtn, .primaryBtnGroup {
     background-color: var(--primaryColour) !important;
+}
+
+.primaryBtn {
     box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
     transition: scale 0.2s ease-in-out;
 }
@@ -104,14 +116,29 @@ h3 {
         scale: 0.90;
     }
 
-.secondaryBtn {
+.primaryBtnGroup, .secondaryBtnGroup {
+    box-shadow: 0 1px 4px 0 var(--shadowColour);
+}
+
+.secondaryBtn, .secondaryBtnGroup, .editBtn {
     border: 1.5px solid var(--textColour);
 }
 
-    .secondaryBtn:hover {
+    .secondaryBtn:hover, .secondaryBtnGroup:hover, .editBtn:hover {
         color: var(--white) !important;
         background-color: var(--textColour);
     }
+
+.secondaryBtnGroup {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 0px 24px 24px 0px
+}
+
+.errorBtn {
+    color: var(--white);
+    background-color: var(--error);
+}
+
 /*Bootstrap | offcanvas*/
 .offcanvas {
     --bs-offcanvas-width: 35vw;
@@ -162,8 +189,12 @@ h3 {
 
 .logBtn {
     font-family: var(--fontBody) !important;
-    color: var(--textColour);
+    color: var(--textColour) !important;
     background-color: var(--primaryColour);
+    border: none;
+    border-radius: 24px;
+    padding: 8px;
+    text-decoration: none;
 }
 
 .icon {
@@ -174,6 +205,7 @@ h3 {
 /*Bootstrap | Navigation bar*/
 .navbar {
     font-family: var(--FontHeading);
+    z-index: 1100 !important;
 }
 
 .nav-link, .dropdown-toggle, .dropdown-item {
@@ -289,3 +321,35 @@ th {
         box-shadow: none;
         backdrop-filter: none;
     }
+
+#autoSuggestContainer {
+    width: 100%;
+}
+
+.suggestBtn {
+    text-align: left !important;
+    background-color: #FFFF !important;
+    border: none !important;
+    border-radius: 0px;
+    width: 100%;
+}
+
+.page-link, page-item:last-child .page-link {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: var(--textColour) !important;
+    border-top: 1.5px solid var(--white);
+    border-bottom: 0.5px solid var(--white);
+    border-radius: 10px !important;
+    box-shadow: 0 1px 4px 0 var(--shadowColour);
+    backdrop-filter: blur(10px);
+    margin-right: 10px;
+    aspect-ratio: 1/1 !important;
+}
+
+.pagination .page-item.active .page-link {
+    text-decoration: underline;
+    border-top: 1.5px solid var(--white);
+    border-left: 1.5px solid var(--white);
+    border-right: 1.5px solid var(--white);
+    border-bottom: 0.5px solid var(--white);
+}

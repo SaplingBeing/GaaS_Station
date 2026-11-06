@@ -41,7 +41,6 @@ namespace GaaS_Station.Controllers
                 viewModelList.Add(new AdminVM
                 {
                     Id = user.Id,
-                    Email = user.Email ?? string.Empty,
                     UserName = user.UserName ?? string.Empty,
                     FirstName = user.FirstName ?? string.Empty,
                     LastName = user.LastName ?? string.Empty,

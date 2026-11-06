@@ -6,22 +6,7 @@
 @{
     ViewData["Title"] = "Manage Users";
 }
-<style>
-    #backgroundImg {
-        width: 100vw;
-        height: 100vh;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        object-fit: cover;
-        z-index: 0;
-    }
-</style>
-<img src="~/images/bg4.png" alt="Background Image" id="backgroundImg" />
+<img src="~/images/bg5.png" alt="Background Image" id="backgroundImgFull">
 <form id="searchForm" action="/Admin/Index" method="get">
     <div class="row gy-5 mb-5">
         <div class="col-md-4 position-relative">
@@ -44,7 +29,7 @@
                 <thead>
                     <tr class="text-center">
                         <th style="width:20%;">User ID</th>
-                        <th style="width:25%;">Email Address</th>
+                        <th style="width:25%;">Username</th>
                         <th class="text-nowrap" style="width:15%;">First Name</th>
                         <th class="text-nowrap" style="width:15%;">Last Name</th>
                         <th>Roles</th>
@@ -56,7 +41,7 @@
                     {
                         <tr>
                             <td class="align-middle text-truncate glassBg">@user.Id</td>
-                            <td class="align-middle glassBg">@user.Email</td>
+                            <td class="align-middle glassBg">@user.UserName</td>
                             <td class="align-middle glassBg">@user.FirstName</td>
                             <td class="align-middle glassBg">@user.LastName</td>
                             <td class="align-middle text-nowrap glassBg">

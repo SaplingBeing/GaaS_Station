@@ -1,6 +1,13 @@
 ﻿@{
     ViewData["Title"] = "GaaS";
+    var results = ViewData["Results"] as List<StationResult>;
+    var searchStation = ViewData["SearchStation"] as string;
+    var searchFuelType = ViewData["SearchFuelType"] as string;
+    var hasCurrentLocation = ViewData["Latitude"] != null && ViewData["Longitude"] != null;
+    var centerLng = hasCurrentLocation ? ViewData["Longitude"] : results != null && results.Count > 0 ? results[0].Longitude : 174.76m;
+    var centerLat = hasCurrentLocation ? ViewData["Latitude"] : results != null && results.Count > 0 ? results[0].Latitude : -36.85m;
 }
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css">
 <link rel="stylesheet" href="~/css/gaasStyleSheet.css" asp-append-version="true">
 <script src="~/js/Weather.js"></script>
 <div id="map"></div>
@@ -17,33 +24,31 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <form method="POST" class="mb-3">
+        <form method="POST" class="mb-3" asp-controller="Home" asp-action="Search">
             <div class="row p-0">
                 <div class="col-12 p-1 position-relative">
                     <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/geo-alt.svg" alt="Location Icon"></span>
-                    <input type="text" class="form-control w-100 ps-5" id="locationTb" placeholder="Enter location...">
+                    <input type="text" class="form-control w-100 ps-5" id="locationTb" name="locationTb" value="@ViewData["SearchLocation"]" placeholder="Enter location...">
                 </div>
             </div>
             <div class="row p-0">
                 <div class="col-sm-6 p-1 position-relative">
                     <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/shop.svg" alt="Station Icon"></span>
-                    <select class="form-select p-2 ps-5">
+                    <select class="form-select p-2 ps-5" name="station">
                         <option selected>Station</option>
-                        <option value="BP">BP</option>
-                        <option value="Mobil">Mobil</option>
-                        <option value="Z-Energy">Z Energy</option>
-                        <option value="Gull">Gull</option>
+                        <option value="BP" selected="@(searchStation == "BP")">BP</option>
+                        <option value="Z Energy" selected="@(searchStation == "Z Energy")">Z Energy</option>
+                        <option value="Caltex" selected="@(searchStation == "Caltex")">Caltex</option>
                     </select>
                 </div>
                 <div class="col-sm-6 p-1 position-relative">
                     <span class="position-absolute mt-1 ms-3 z-3"><img src="/images/fuel-pump.svg" alt="Fuel Type Icon"></span>
-                    <select class="form-select p-2 ps-5">
+                    <select class="form-select p-2 ps-5" name="fuelType">
                         <option selected class="dropdown-item">Fuel Type</option>
-                        <option value="91">91</option>
-                        <option value="95">95</option>
-                        <option value="98">98</option>
-                        <option value="E10">E10</option>
-                        <option value="Disel">Diesel</option>
+                        <option value="91" selected="@(searchFuelType == "91")">91</option>
+                        <option value="95" selected="@(searchFuelType == "95")">95</option>
+                        <option value="98" selected="@(searchFuelType == "98")">98</option>
+                        <option value="Diesel" selected="@(searchFuelType == "Diesel")">Diesel</option>
                     </select>
                 </div>
             </div>
@@ -54,36 +59,65 @@
             </div>
         </form>
         <hr>
-        <div class="p-3 container-fluid glassBg">
-            <div class="row">
-                <div class="col-2">
-                    <img src="~/images/zenergyLogo.png" alt="Z Energy Logo" />
+        @if (ViewData["Error"] != null)
+        {
+            <p>@ViewData["Error"]</p>
+        }
+        else if (results != null && results.Count == 0)
+        {
+            <p>No result found. Please try a different search</p>
+        }
+        else if (results != null)
+        {
+            @foreach (var result in results)
+            {
+                <div class="p-3 mb-3 container-fluid glassBg">
+                    <div class="row">
+                        <div class="col-2">
+                            <img src="@result.Icon" alt="@result.Brand Logo" style="aspect-ratio: 1/1; width: 100px;" />
+                        </div>
+                        <div class="col-2">
+                            @foreach (var price in result.Prices)
+                            {
+                                <h3>@price.FuelType?.Split(" (")[0] $@price.PriceValue.ToString("0.000")</h3>
+                            }
+                        </div>
+                        <div class="col-8 position-relative">
+                            <h3 class="fw-bold">@result.Brand - @result.Branch</h3>
+                            <p>@result.AddressString</p>
+                            <button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <h3>91</h3>
-                    <h3>95</h3>
-                    <h3>Disel</h3>
-                </div>
-                <div class="col-8 position-relative">
-                    <h3 class="fw-bold">Z Energy Hunter's Corner</h3>
-                    <p>72-76 East Tamaki Road, Papatoetoe, Auckland 2025</p>
-                    <button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></button>
-                </div>
-            </div>
-        </div>
+            }
+        }
     </div>
 </div>
-
+@if (results != null)
+{
+    <div class="d-none">
+        @foreach (var result in results)
+        {
+            <div class="stationMarker d-flex align-items-center bg-white rounded-pill shadow p-1 pe-3" data-lng="@result.Longitude" data-lat="@result.Latitude">
+                <img src="@result.Icon" alt="@result.Brand Logo" class="me-2" style="width: 30px; height: 30px;">
+                <div>
+                    <p class="m-0 fw-bold">@result.Brand - @result.Branch</p>
+                    <p class="m-0" style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@result.AddressString</p>
+                </div>
+            </div>
+        }
+    </div>
+}
 <script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
 <script>
     const aucklandBounds = [
-        [174.450, -37.150],
+        [174.450, -37.210],
         [175.250, -36.400]
     ]
     const map = new maplibregl.Map({
         container: "map",
         style: "https://tiles.openfreemap.org/styles/liberty",
-        center: [174.76, -36.85], // lng, lat — Auckland
+        center: [@centerLng, @centerLat], // lng, lat — Auckland
         zoom: 11,
         attributionControl: false,
         dragRotate: false,
@@ -91,9 +125,29 @@
         touchPitch: false,
         dragPan: { inertia: false }
     });
-    const marker = new maplibregl.Marker()
-        .setLngLat([174.76, -36.85])
-        .addTo(map);
+    const showSidebar = @(results != null || ViewData["Error"] != null ? "true" : "false");
+    const hasCurrentLocation = @(hasCurrentLocation ? "true" : "false");
+    const searched = @((bool)(ViewData["Searched"] ?? false) ? "true" : "false");
+    if (showSidebar) {
+        document.addEventListener("DOMContentLoaded", function() {
+            bootstrap.Offcanvas.getOrCreateInstance("#offcanvasGaas").show();
+        });
+    }
+    if (hasCurrentLocation) {
+        const marker = new maplibregl.Marker({ color: "red" })
+            .setLngLat([@centerLng, @centerLat])
+            .addTo(map);
+    }
+    else if (!searched) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            window.location.href = "/Gaas?latitude=" + position.coords.latitude + "&longitude=" + position.coords.longitude;
+        });
+    }
+    document.querySelectorAll(".stationMarker").forEach(function(stationMarker) {
+        new maplibregl.Marker({ element: stationMarker })
+            .setLngLat([stationMarker.dataset.lng, stationMarker.dataset.lat])
+            .addTo(map);
+    });
     map.addControl(new maplibregl.NavigationControl());
     map.touchZoomRotate.disableRotation();
     map.setMaxBounds(aucklandBounds);

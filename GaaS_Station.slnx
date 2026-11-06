@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="../../../../../Programming/ASPNETprojects/GaaS-API/GaaS-API.csproj" />
   <Project Path="GaaS_Station/GaaS_Station.csproj" />
+  <Project Path="GeoLocation/GeoLocation.csproj" Id="53d8140e-412c-4387-8bb8-896ed5874793" />
 </Solution>

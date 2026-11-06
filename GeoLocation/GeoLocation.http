@@ -1,0 +1,6 @@
+@GeoLocation_HostAddress = http://localhost:5174
+
+GET {{GeoLocation_HostAddress}}/api/location/query?longitude=174.7633&latitude=-36.8485&radiusKm=10&key=
+Accept: application/json
+
+###

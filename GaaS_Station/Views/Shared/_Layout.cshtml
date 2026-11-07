@@ -27,11 +27,15 @@
                         <div class="offcanvas-body justify-content-between flex-grow-1">
                             <div class="glassBg">
                                 <ul class="navbar-nav flex-grow-1">
+                                    @{
+                                        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+                                        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+                                    }
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                        <a class="nav-link @(currentController == "Home" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Gaas" asp-action="Index">GaaS</a>
+                                        <a class="nav-link @(currentController == "Gaas" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Gaas" asp-action="Index">GaaS</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" asp-area="" asp-controller="#" asp-action="#">About</a>
@@ -46,10 +50,10 @@
                                     {
                                         <li class="nav-item">
                                             <div class="dropdown">
-                                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                                                <a class="nav-link dropdown-toggle @(currentController == "Admin" ? "active" : "")" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
                                                 <ul class="dropdown-menu">
                                                     <li><a class="dropdown-item" asp-area="" asp-controller="#" asp-action="#">Gas CRUD</a></li>
-                                                    <li><a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Index">Manage Users</a></li>
+                                                    <li><a class="dropdown-item @(currentController == "Admin" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Index">Manage Users</a></li>
                                                 </ul>
                                             </div>
                                         </li>
@@ -74,7 +78,7 @@
             <div class="container-fluid">
                 <div class="row gy-0">
                     <div class="col-sm-6 lh-1 p-2">
-                        <p class="m-0">&copy; 2026 GaaS Station | All Rights Reserved</p>
+                        <p class="text-wrap m-0">&copy; 2026 GaaS Station | All Rights Reserved | This Is A Student Project For Academic Purposes</p>
                     </div>
                     <div class="col-sm-6 lh-1 p-2 footerColR">
                         <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-reset text-decoration-none">Privacy Policy</a>

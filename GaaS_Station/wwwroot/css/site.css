@@ -34,6 +34,10 @@ html {
     min-height: 100%;
 }
 
+body {
+    margin-bottom: 33px;
+}
+
 #backgroundImgFull {
     width: 100vw;
     height: 100vh;
@@ -222,10 +226,11 @@ h3, th {
 }
 
     .nav-link:hover, .dropdown-toggle:hover, .dropdown-item:hover {
-        color: var(--textColour);
-        background-color: rgba(248, 248, 248, 0.5);
-        box-shadow: inset 0 0 0 0.5px var(--shadowColour);
-        backdrop-filter: blur(2px);
+        text-decoration: underline;
+    }
+
+    .nav-link.active {
+        text-decoration: underline;
     }
 
 .navbar-toggler:focus, .navbar-toggler:active {

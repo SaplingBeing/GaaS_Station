@@ -37,14 +37,14 @@ namespace GaaS_Station.Controllers
 
             foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user);
+                var userRoles = await _userManager.GetRolesAsync(user);
                 viewModelList.Add(new AdminVM
                 {
                     Id = user.Id,
                     UserName = user.UserName ?? string.Empty,
                     FirstName = user.FirstName ?? string.Empty,
                     LastName = user.LastName ?? string.Empty,
-                    UserRoles = roles
+                    UserRoles = userRoles
                 });
             }
             int pageSize = 6;

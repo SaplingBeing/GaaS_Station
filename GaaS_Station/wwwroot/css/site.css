@@ -107,13 +107,13 @@ h3, th {
 }
 
 /*Buttons*/
-.primaryBtn, .secondaryBtn, .errorBtn, .editBtn {
+.primaryBtn, .secondaryBtn, .errorBtn, .editBtn, .btn.active {
     font-family: var(--fontBody);
     font-size: var(--fontSm) !important;
     border-radius: 24px;
 }
 
-.primaryBtn, .secondaryBtn, .editBtn {
+.primaryBtn, .secondaryBtn, .editBtn, .btn.active {
     color: var(--textColour) !important;
 }
 
@@ -121,23 +121,15 @@ h3, th {
     background-color: var(--primaryColour) !important;
 }
 
-.primaryBtn {
-    transition: scale 0.2s ease-in-out;
-}
-
-    .primaryBtn:hover {
-        scale: 0.90;
-    }
-
 .primaryBtnGroup, .secondaryBtnGroup {
     box-shadow: 0 1px 4px 0 var(--shadowColour);
 }
 
-.secondaryBtn, .secondaryBtnGroup, .editBtn {
+.secondaryBtn, .secondaryBtnGroup, .editBtn, .btn.active {
     border: 1.5px solid var(--textColour);
 }
 
-    .secondaryBtn:hover, .secondaryBtnGroup:hover, .editBtn:hover {
+    .secondaryBtn:hover, .secondaryBtnGroup:hover, .editBtn:hover, .btn.active {
         color: var(--white) !important;
         background-color: var(--textColour);
     }
@@ -370,7 +362,13 @@ th {
     border-right: 1.5px solid var(--white);
     border-bottom: 0.5px solid var(--white);
 }
-.custom-checkbox .form-check-input:checked {
+.form-check-input:checked {
     background-color: var(--primaryColour) !important;
-    accent-color: var(--primaryColour) !important;
+    border-color: var(--primaryColour) !important;
 }
+.form-check-input:focus {
+    box-shadow: none !important;
+    border-color: rgba(0, 0, 0, 0.25);
+}
+
+.

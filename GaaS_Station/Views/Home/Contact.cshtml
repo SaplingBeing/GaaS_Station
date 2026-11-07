@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+@* Bg image *@
+<img src="~/images/bg3.jpg" alt="Background Image" id="backgroundImgFull">
+<div class="container">
+    <div class="p-5 glassBg">
+        <div class="row">
+            <div class="col-12">
+                <h1>Contact Us</h1>
+                <h2>Get in touch with our team to learn more about GaaS</h2>
+                <hr>
+            </div>
+        </div>
+        @* Contact form *@
+        <div class="row">
+            @* Column 1 *@
+            <div class="col-sm-7 p-2">
+                <div class="p-4 glassBg">
+                    <form action="/Index/Contact" id="contact" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="fw-bold mb-1">Name</label>
+                            <input class="form-control p-2" type="text" id="name" placeholder="Ex. Austin" pattern="[a-zA-Z]+" title="Please enter letters only. Blank entries are not allowed." min="2" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="fw-bold mb-1">Email Address</label>
+                            <input class="form-control p-2" type="email" id="email" placeholder="Ex. austin@email.com" min="2" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="fw-bold mb-1">Message</label>
+                            <textarea class="form-control p-2" id="message" rows="5" placeholder="Enter message here..." min="20" required style="resize:none;"></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn primaryBtn">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @* Column 2 *@
+            <div class="col-sm-5 p-2">
+                <div class="align-items-center">
+                    <div class="d-flex align-items-center p-3 mb-3 glassBg">
+                        <p class="m-0"><img class="img-fluid" src="~/images/geo-alt.svg" alt="Location Icon"> | Manukau Institute of Technology Corner of Davies Avenue, Manukau Station Rd</p>
+                    </div>
+                    <div class="d-flex align-items-center p-3 mb-3 glassBg">
+                        <p class="m-0"><img class="img-fluid" src="/images/envelope-at.svg" alt="Email Icon"> | contactddj@gaas.co.nz</p>
+                    </div>
+                    <div class="d-flex align-items-center p-3 glassBg">
+                        <p class="m-0"><img class="img-fluid" src="/images/telephone.svg" alt="Email Icon"> | +64 09 123 1234</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,9 @@
-﻿@{ViewData["Title"] = "Home Page";}
+﻿@{
+    ViewData["Title"] = "Home";
+}
 <link rel="stylesheet" href="~/css/homeStyleSheet.css" asp-append-version="true">
 @*Background image*@
-<img src="~/images/bg.jpg" alt="Background Image" id="backgroundImg"/>
+<img src="~/images/bg.jpg" alt="Background Image" id="backgroundImg" />
 @*GaaS search bar*@
 <form class="d-flex justify-content-center" id="searchContainer" method="POST">
     <div class="d-inline-block p-5 m-3 glassBg">
@@ -42,7 +44,7 @@
             </div>
         </div>
     </div>
-</form> 
+</form>
 @* Auckland POI *@
 <div class="d-inline-block overflow-hidden p-0 m-5 glassBg" id="poiContainer">
     <div class="row">
@@ -55,7 +57,7 @@
             <h1><span class="fst-italic">Travel</span> with <span class="highlight">GaaS</span></h1>
             <button class="btn w-50 p-2 secondaryBtn">Explore</button>
         </div>
-    </div>    
+    </div>
 </div>
 @* Meet the Team *@
 <div class="row">
@@ -83,7 +85,7 @@
 @* FAQ *@
 <div class="m-5" id="faqContainer">
     <div class="row">
-            <div class="col-12 mb-3">
+        <div class="col-12 mb-3">
             <h1>FAQ</h1>
             <h2>Answers to your questions can be found here:</h2>
         </div>

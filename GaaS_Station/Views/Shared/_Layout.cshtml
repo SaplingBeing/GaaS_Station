@@ -44,7 +44,7 @@
                                         <a class="nav-link" asp-area="" asp-controller="#" asp-action="#">Auckland POI</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="#" asp-action="#">Contact</a>
+                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                                     </li>
                                     @if (User.IsInRole("Admin"))
                                     {
@@ -83,7 +83,7 @@
                     <div class="col-sm-6 lh-1 p-2 footerColR">
                         <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-reset text-decoration-none">Privacy Policy</a>
                         <span>|</span>
-                        <a asp-area="" asp-controller="#" asp-action="#" class="text-reset text-decoration-none">Terms & Conditions</a>
+                        <a asp-area="" asp-controller="Home" asp-action="TermsConditions" class="text-reset text-decoration-none">Terms & Conditions</a>
                     </div>
                 </div>
             </div>

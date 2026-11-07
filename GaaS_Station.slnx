@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="../../../../Users/Justi/source/repos/SaplingBeing/GaaS_Station/GaaS-API/GaaS-API.csproj" />
+  <Project Path="../../../../Users/Justi/source/repos/SaplingBeing/GaaS_Station/GeoLocation/GeoLocation.csproj" />
   <Project Path="GaaS_Station/GaaS_Station.csproj" />
 </Solution>

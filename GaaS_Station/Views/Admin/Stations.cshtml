@@ -1,0 +1,75 @@
+﻿@model X.PagedList.IPagedList<GaaS_Station.ViewModel.StationVM>
+@using X.PagedList.Mvc.Core;
+@{
+    ViewData["Title"] = "Manage Stations";
+}
+<img src="~/images/bg5.png" alt="Background Image" id="backgroundImgFull">
+<div class="container">
+    <div class="row gy-5 mb-2">
+        <div class="col-md-4 position-relative">
+            <h1>Manage Stations</h1>
+            <form asp-action="Stations" method="get" class="input-group">
+                <input type="text" class="form-control" name="searchString" value="@ViewBag.SearchString" placeholder="Enter branch..." autocomplete="off">
+                <button type="submit" class="btn input-group-btn d-inline-flex align-items-center justify-content-center primaryBtnGroup"><img src="/images/search.svg" alt="Search Icon"></button>
+                <a asp-action="Stations" class="btn input-group-btn d-inline-flex align-items-center justify-content-center glassBg">Show All</a>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3 position-relative text-end">
+            <a asp-action="CreateStation" class="btn primaryBtn">+ Add New Station</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive-lg">
+                <table class="table glassBg">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="text-nowrap">Station ID</th>
+                            <th style="width:25%;">Branch</th>
+                            <th style="width:10%;">Brand</th>
+                            <th style="width:50%;">Address</th>
+                            <th class="text-center" style="width: 160px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="align-middle glassBg">@item.StationId</td>
+                                    <td class="align-middle text-nowrap glassBg">@item.Branch</td>
+                                    <td class="align-middle text-nowrap glassBg">@item.BrandName</td>
+                                    <td class="align-middle text-nowrap glassBg">@item.AddressString</td>
+                                    <td class="text-nowrap text-end glassBg">
+                                        <a asp-action="EditStation" asp-route-id="@item.StationId" class="btn me-1 editBtn">Edit</a>
+                                        <form asp-action="DeleteStation" asp-route-id="@item.StationId" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this station?');">
+                                            <button type="submit" class="btn errorBtn"><img src="~/images/trash3.svg" alt="Delete" class="svgWhite"></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">No stations found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mb-5">
+        @Html.PagedListPager(Model, page => Url.Action("Stations",
+        new { Page = page }),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+        })
+    </div>
+</div>

@@ -1,10 +1,12 @@
 ﻿using GaaS_Station.Data;
+using GaaS_Station.Models;
 using GaaS_Station.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Buffers.Text;
 using X.PagedList.Extensions;
 
 namespace GaaS_Station.Controllers
@@ -13,12 +15,16 @@ namespace GaaS_Station.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHttpClientFactory _clientFactory;
+        private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AdminController(ApplicationDbContext context, IHttpClientFactory clientFactory, IConfiguration configuration, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _clientFactory = clientFactory;
+            _configuration = configuration;
             _userManager = userManager;
             _roleManager = roleManager;
         }
@@ -130,6 +136,49 @@ namespace GaaS_Station.Controllers
 
             }
             return NotFound("User not found");
+        }
+
+        // Stations
+        public async Task<IActionResult> Stations(string searchString, int? page)
+        {
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+
+            var client = _clientFactory.CreateClient();
+            string url = $"{baseUrl}station/search?apiKey={apiKey}";
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                url += $"&branch={Uri.EscapeDataString(searchString)}";
+            }
+
+            var response = await client.GetAsync(url);
+
+            var stationsVMList = new List<StationVM>(); 
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var apiStations = JsonConvert.DeserializeObject<List<StationVM>>(jsonString) ?? new();
+
+                foreach (var station in apiStations)
+                {
+                    stationsVMList.Add(new StationVM
+                    {
+                        StationId = station.StationId,
+                        Branch = station.Branch,
+                        BrandName = station.BrandName,
+                        AddressString = station.AddressString
+                    });
+                }
+            }
+
+            int pageSize = 6;
+            int pageNumber = page ?? 1;
+            var pagedList = stationsVMList.ToPagedList(pageNumber, pageSize);
+
+            ViewBag.SearchString = searchString;
+            return View(pagedList);
         }
     }
 }

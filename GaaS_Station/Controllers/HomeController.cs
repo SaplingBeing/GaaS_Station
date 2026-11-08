@@ -6,17 +6,6 @@ namespace GaaS_Station.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _configuration;
-
-        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory, IConfiguration configuration)
-        {
-            _logger = logger;
-            _httpClientFactory = httpClientFactory;
-            _configuration = configuration;
-        }
-
         public IActionResult Index()
         {
             return View();

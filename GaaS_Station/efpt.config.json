@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 6,
-   "ContextClassName": "FS2026_Group1_ProjectContext",
+   "ContextClassName": "GaaSContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
@@ -19,15 +19,31 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[OAuthProvider]",
+         "Name": "[dbo].[APIKey]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UserAccount]",
+         "Name": "[dbo].[Brand]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UserOAuth]",
+         "Name": "[dbo].[FuelType]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[GeoLocation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Price]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PriceChangeLog]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Station]",
          "ObjectType": 0
       }
    ],

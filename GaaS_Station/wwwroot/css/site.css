@@ -359,6 +359,7 @@ th {
 }
 
 .page-link, page-item:last-child .page-link {
+    text-align: center;
     background-color: rgba(255, 255, 255, 0.2) !important;
     color: var(--textColour) !important;
     border-top: 1.5px solid var(--white);
@@ -367,6 +368,7 @@ th {
     box-shadow: 0 1px 4px 0 var(--shadowColour);
     backdrop-filter: blur(10px);
     margin-right: 10px;
+    width: 40px;
     aspect-ratio: 1/1 !important;
 }
 
@@ -387,5 +389,3 @@ th {
     box-shadow: none !important;
     border-color: rgba(0, 0, 0, 0.25);
 }
-
-.

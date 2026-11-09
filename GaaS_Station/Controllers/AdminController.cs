@@ -154,7 +154,7 @@ namespace GaaS_Station.Controllers
 
             var response = await client.GetAsync(url);
 
-            var stationsVMList = new List<StationVM>(); 
+            var stationsVMList = new List<StationVM>();
 
             if (response.IsSuccessStatusCode)
             {
@@ -179,6 +179,45 @@ namespace GaaS_Station.Controllers
 
             ViewBag.SearchString = searchString;
             return View(pagedList);
+        }
+        [HttpGet]
+        public async Task<IActionResult> StationsAJAX(string searchString)
+        {
+            searchString ??= string.Empty;
+
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+
+            var client = _clientFactory.CreateClient();
+            string url = $"{baseUrl}station/search?apiKey={apiKey}";
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                url += $"&branch={Uri.EscapeDataString(searchString)}";
+            }
+
+            var response = await client.GetAsync(url);
+            var stationsVMList = new List<StationVM>();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var apiStations = JsonConvert.DeserializeObject<List<StationVM>>(jsonString) ?? new();
+
+                foreach (var s in apiStations)
+                {
+                    stationsVMList.Add(new StationVM
+                    {
+                        StationId = s.StationId,
+                        Branch = s.Branch,
+                        BrandName = s.BrandName,
+                        AddressString = s.AddressString
+                    });
+                }
+            }
+
+            // Return the list as JSON directly to your AJAX call
+            return Json(stationsVMList);
         }
     }
 }

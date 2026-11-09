@@ -1,0 +1,61 @@
+﻿@model GaaS_Station.ViewModel.StationVM
+@{
+    ViewData["Title"] = "Edit Station";
+}
+<img src="~/images/bg5.png" alt="Background Image" id="backgroundImgFull">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="w-50 p-5 glassBg">
+                    <h1>Edit Station</h1>
+                    <hr>
+                    <form asp-action="EditStation" method="post">
+                        <div class="mb-3">
+                            <label asp-for="StationId" class="form-label">Station Id</label>
+                            <input asp-for="StationId" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Branch" class="form-label">Branch Name</label>
+                            <input asp-for="Branch" class="form-control">
+                            <span asp-validation-for="Branch" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="BrandId" class="form-label">Station</label>
+                            <select asp-for="BrandId" class="form-select">
+                                <option>Station</option>
+                                <option value="1">Z Energy</option>
+                                <option value="2">BP</option>
+                                <option value="3">Caltex</option>
+                            </select>
+                            <span asp-validation-for="BrandId" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="AddressString" class="form-label">Address</label>
+                            <input asp-for="AddressString" class="form-control">
+                            <span asp-validation-for="AddressString" class="text-danger"></span>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Latitude" class="form-label">Latitude</label>
+                                <input asp-for="Latitude" type="number" step="any" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Longitude" class="form-label">Longitude</label>
+                                <input asp-for="Longitude" type="number" step="any" class="form-control">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12 text-end">
+                                <a asp-action="Stations" class="btn secondaryBtn">Cancel</a>
+                                <a href="@Url.Action("ManagePrices", "Admin", new { stationId = Model.StationId })" class="btn secondaryBtn">Manage Fuel Prices</a>
+                                <button type="submit" class="btn primaryBtn">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

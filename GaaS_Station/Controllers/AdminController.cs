@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text;
 using X.PagedList.Extensions;
 
 namespace GaaS_Station.Controllers
@@ -97,6 +98,7 @@ namespace GaaS_Station.Controllers
 
         // EDIT user
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AdminVM viewModel, List<string> selectedRoles)
         {
             var user = await _userManager.FindByIdAsync(viewModel.Id);
@@ -108,7 +110,6 @@ namespace GaaS_Station.Controllers
             user.LastName = viewModel.LastName;
             await _userManager.UpdateAsync(user);
 
-            // Sync user roles
             var currentRoles = await _userManager.GetRolesAsync(user);
 
             selectedRoles ??= new List<string>();
@@ -124,6 +125,7 @@ namespace GaaS_Station.Controllers
 
         // DELETE user
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -202,20 +204,299 @@ namespace GaaS_Station.Controllers
                 var jsonString = await response.Content.ReadAsStringAsync();
                 var apiStations = JsonConvert.DeserializeObject<List<StationVM>>(jsonString) ?? new();
 
-                foreach (var s in apiStations)
+                foreach (var station in apiStations)
                 {
                     stationsVMList.Add(new StationVM
                     {
-                        StationId = s.StationId,
-                        Branch = s.Branch,
-                        BrandName = s.BrandName,
-                        AddressString = s.AddressString
+                        StationId = station.StationId,
+                        Branch = station.Branch,
+                        BrandName = station.BrandName,
+                        AddressString = station.AddressString
                     });
                 }
             }
 
-            // Return the list as JSON directly to your AJAX call
             return Json(stationsVMList);
+        }
+        public async Task<IActionResult> EditStation(int id)
+        {
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+
+            var client = _clientFactory.CreateClient();
+
+            var response = await client.GetAsync($"{baseUrl}station/search?apiKey={apiKey}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["ErrorMessage"] = "Could not connect to station service.";
+                return RedirectToAction(nameof(Stations));
+            }
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var apiStations = JsonConvert.DeserializeObject<List<StationVM>>(jsonString) ?? new();
+
+            var station = apiStations.FirstOrDefault(s => s.StationId == id);
+
+            if (station == null)
+            {
+                return NotFound();
+            }
+
+            var model = new StationVM
+            {
+                StationId = station.StationId,
+                Branch = station.Branch,
+                BrandName = station.BrandName,
+                AddressString = station.AddressString,
+                Latitude = station.Latitude,
+                Longitude = station.Longitude
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditStation(int id, StationVM model)
+        {
+            if (id != model.StationId)
+            {
+                return BadRequest();
+            }
+
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            var apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+
+            var client = _clientFactory.CreateClient();
+
+            var payload = new
+            {
+                stationID = model.StationId,
+                address = model.AddressString,
+                latitude = model.Latitude,
+                longitude = model.Longitude,
+                brand = model.BrandId,
+                branch = model.Branch,
+                key = apiKey
+            };
+
+            var jsonContent = new StringContent(
+                JsonConvert.SerializeObject(payload),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            var response = await client.PostAsync($"{baseUrl}station/update", jsonContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Station updated successfully!";
+                return RedirectToAction(nameof(Stations));
+            }
+
+            var errorContent = await response.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, $"Error from API: {errorContent}");
+            return View(model);
+        }
+
+        public IActionResult CreateStation()
+        {
+            return View(new StationVM());
+        }
+
+        // POST: Admin/CreateStation
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateStation(StationVM model)
+        {
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            var apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+
+            var client = _clientFactory.CreateClient();
+
+            var payload = new
+            {
+                address = model.AddressString,
+                latitude = model.Latitude,
+                longitude = model.Longitude,
+                brand = model.BrandId,
+                branch = model.Branch,
+                key = apiKey
+            };
+
+            var jsonContent = new StringContent(
+                JsonConvert.SerializeObject(payload),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            // Calls your Azure Function create endpoint
+            var response = await client.PostAsync($"{baseUrl}station/create", jsonContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Station created successfully!";
+                return RedirectToAction(nameof(Stations));
+            }
+
+            var errorContent = await response.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, $"Error from API: {errorContent}");
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteStation(int id)
+        {
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            var apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+
+            var client = _clientFactory.CreateClient();
+
+            var payload = new
+            {
+                stationID = id,
+                key = apiKey
+            };
+
+            var jsonContent = new StringContent(
+                JsonConvert.SerializeObject(payload),
+                Encoding.UTF8,
+                "application/json"
+            );
+
+            var response = await client.PostAsync($"{baseUrl}station/delete", jsonContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Station deleted successfully!";
+                return RedirectToAction(nameof(Stations));
+            }
+
+            var errorContent = await response.Content.ReadAsStringAsync();
+            TempData["ErrorMessage"] = $"Error deleting station: {errorContent}";
+            return RedirectToAction(nameof(Stations));
+        }
+        public class FuelTypeResponse
+        {
+            public int FuelID { get; set; }
+            public string FuelType { get; set; } = string.Empty;
+        }
+
+        private class PriceApiResponse
+        {
+            public int PriceID { get; set; }
+            public int Station { get; set; }
+            public string? FuelType { get; set; }
+            public decimal PriceValue { get; set; }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManagePrices(int stationId)
+        {
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+            var client = _clientFactory.CreateClient();
+
+            // 1. Fetch station details
+            var stationResponse = await client.GetAsync($"{baseUrl}station/search?apiKey={apiKey}");
+            if (!stationResponse.IsSuccessStatusCode) return RedirectToAction(nameof(Stations));
+
+            var stationJson = await stationResponse.Content.ReadAsStringAsync();
+            var stations = JsonConvert.DeserializeObject<List<StationVM>>(stationJson) ?? new();
+            var station = stations.FirstOrDefault(s => s.StationId == stationId);
+            if (station == null) return NotFound();
+
+            // 2. Fetch all fuel types
+            var fuelTypes = await GetFuelTypesListAsync();
+
+            // 3. Fetch existing prices for this station
+            var priceResponse = await client.GetAsync($"{baseUrl}price/search?key={apiKey}&station={stationId}");
+            var existingPrices = new List<StationPriceItemVM>();
+            if (priceResponse.IsSuccessStatusCode)
+            {
+                var priceJson = await priceResponse.Content.ReadAsStringAsync();
+                var apiPrices = JsonConvert.DeserializeObject<List<PriceApiResponse>>(priceJson) ?? new();
+                existingPrices = apiPrices.Select(p => new StationPriceItemVM
+                {
+                    PriceId = p.PriceID,
+                    StationId = p.Station,
+                    FuelTypeId = fuelTypes.FirstOrDefault(f => f.FuelTypeName.Equals(p.FuelType, StringComparison.OrdinalIgnoreCase))?.FuelId ?? 0,
+                    PriceValue = p.PriceValue
+                }).ToList();
+            }
+
+            var model = new StationPriceManagementVM
+            {
+                StationId = station.StationId,
+                StationName = $"{station.BrandName} - {station.Branch}",
+                FuelTypes = fuelTypes,
+                Prices = existingPrices
+            };
+
+            return View(model);
+        }
+
+        private Task<List<FuelTypeItemVM>> GetFuelTypesListAsync()
+        {
+            var fuelTypes = new List<FuelTypeItemVM>
+    {
+        new FuelTypeItemVM { FuelId = 1, FuelTypeName = "91 (Regular Unleaded)" },
+        new FuelTypeItemVM { FuelId = 2, FuelTypeName = "95 (Premium Unleaded)" },
+        new FuelTypeItemVM { FuelId = 3, FuelTypeName = "98 (High-Performance Unleaded)" },
+        new FuelTypeItemVM { FuelId = 4, FuelTypeName = "Diesel" }
+    };
+
+            return Task.FromResult(fuelTypes);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SaveStationPrice(int stationId, int fuelTypeId, int priceId, decimal priceValue)
+        {
+            var baseUrl = _configuration["ApiSettings:BaseUrl"];
+            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+            var client = _clientFactory.CreateClient();
+
+            HttpResponseMessage response;
+
+            if (priceId > 0)
+            {
+                var updatePayload = new
+                {
+                    priceID = priceId,
+                    station = stationId,
+                    fuelType = fuelTypeId,
+                    priceValue = priceValue,
+                    key = apiKey
+                };
+                var content = new StringContent(JsonConvert.SerializeObject(updatePayload), Encoding.UTF8, "application/json");
+                response = await client.PostAsync($"{baseUrl}price/update", content);
+            }
+            else
+            {
+                var createPayload = new
+                {
+                    station = stationId,
+                    fuelType = fuelTypeId,
+                    priceValue = priceValue,
+                    key = apiKey
+                };
+                var content = new StringContent(JsonConvert.SerializeObject(createPayload), Encoding.UTF8, "application/json");
+                response = await client.PostAsync($"{baseUrl}price/create", content);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["SuccessMessage"] = "Fuel price saved successfully!";
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                TempData["ErrorMessage"] = $"Error saving price: {error}";
+            }
+
+            return RedirectToAction(nameof(ManagePrices), new { stationId = stationId });
         }
     }
 }

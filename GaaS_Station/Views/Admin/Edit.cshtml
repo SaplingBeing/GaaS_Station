@@ -3,42 +3,40 @@
     ViewData["Title"] = "Edit User";
 }
 <img src="~/images/bg5.png" alt="Background Image" id="backgroundImgFull">
-<div class="row">
-    <div class="col-12">
-        <div class="d-flex justify-content-center align-items-center">
-            <div class="card glassBg" style="max-width:600px">
-                <div class="card-header">
-                    <h2 class="card-title fw-bold mb-0"><img src="~/images/user.svg" alt="User Icon"></img> Edit User Details</h2>
-                </div>
-                <div class="card-body">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="w-50 p-5 glassBg">
+                    <h1 class="mb-0">Edit User Details</h1>
+                    <hr>
                     <form asp-action="Edit" method="post">
-                        <div class="row">
-                            <div class="col-12">
-                                <input type="hidden" asp-for="Id">
-                                <div class="mb-3">
-                                    <label asp-for="UserName" class="form-label">Username</label>
-                                    <input asp-for="UserName" class="form-control" required />
-                                    <span asp-validation-for="UserName" class="text-danger"></span>
-                                </div>
-                                <div class="mb-3">
-                                    <label asp-for="Email" class="form-label">Email</label>
-                                    <input asp-for="Email" type="email" class="form-control" required />
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label asp-for="Id" class="form-label">User Id</label>
+                            <input asp-for="Id" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="UserName" class="form-label">Username</label>
+                            <input asp-for="UserName" class="form-control" required>
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email</label>
+                            <input asp-for="Email" type="email" class="form-control" required>
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div>
                                     <label asp-for="FirstName" class="form-label">First Name</label>
-                                    <input asp-for="FirstName" class="form-control" required />
+                                    <input asp-for="FirstName" class="form-control" required>
                                     <span asp-validation-for="FirstName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div>
                                     <label asp-for="LastName" class="form-label">Last Name</label>
-                                    <input asp-for="LastName" class="form-control" required />
+                                    <input asp-for="LastName" class="form-control" required>
                                     <span asp-validation-for="LastName" class="text-danger"></span>
                                 </div>
                             </div>
@@ -46,8 +44,8 @@
                         <hr>
                         <div class="row mb-3">
                             <div class="col-12">
-                                <h3 class="fw-bold">Assign Roles</h3>
-                                <p>Check the roles to grant to this user.</p>
+                                <h2 class="mb-0">Assign Roles</h2>
+                                <p class="mb-0">Check the roles to grant to this user.</p>
                                 @foreach (var role in Model.AllRoles)
                                 {
                                     var isChecked = Model.UserRoles.Contains(role);
@@ -66,10 +64,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-12 text-end">
                                 <a asp-action="Index" class="btn secondaryBtn">Cancel</a>
-                            </div>
-                            <div class="col-6 d-flex justify-content-end">
                                 <button type="submit" class="btn primaryBtn">Save Changes</button>
                             </div>
                         </div>
@@ -78,4 +74,3 @@
             </div>
         </div>
     </div>
-</div>

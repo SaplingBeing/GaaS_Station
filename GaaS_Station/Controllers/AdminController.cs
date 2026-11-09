@@ -1,4 +1,5 @@
 ﻿using GaaS_Station.Data;
+using GaaS_Station.Models;
 using GaaS_Station.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,10 @@ namespace GaaS_Station.Controllers
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly string _baseUrl;
+        private readonly string _apiKey;
 
+        // Constructor
         public AdminController(ApplicationDbContext context, IHttpClientFactory clientFactory, IConfiguration configuration, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -26,18 +30,24 @@ namespace GaaS_Station.Controllers
             _configuration = configuration;
             _userManager = userManager;
             _roleManager = roleManager;
+            // Gets baseUrl and Admin api key from appsettings.json
+            _baseUrl = _configuration["ApiSettings:BaseUrl"];
+            _apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
         }
 
+        // Display all users | Admin/Index.cshtml
         public async Task<IActionResult> Index(string searchString, int? page)
         {
             var query = _userManager.Users.AsQueryable();
 
+            // A query to find a user with a specific first or last name 
             if (!string.IsNullOrEmpty(searchString))
             {
                 query = query.Where(s => s.FirstName.Contains(searchString.Trim()) || s.LastName.Contains(searchString.Trim()) || (s.FirstName + " " + s.LastName).Contains(searchString.Trim()));
             }
-            var users = await query.ToListAsync();
 
+            // Executes the query 
+            var users = await query.ToListAsync();
             var viewModelList = new List<AdminVM>();
 
             foreach (var user in users)
@@ -52,30 +62,32 @@ namespace GaaS_Station.Controllers
                     UserRoles = userRoles
                 });
             }
+
+            // Displays 6 rows per page 
             int pageSize = 6;
             int pageNumber = page ?? 1;
             var pagedList = viewModelList.ToPagedList(pageNumber, pageSize);
             return View(pagedList);
         }
 
+        // Search suggestion for Admin/Index.cshtml
         [HttpGet]
         public string IndexAJAX(string searchString)
-        {
+        {   // Ensure search string is not null
             searchString ??= string.Empty;
 
+            // SQL query for first and last name
             string sql = "SELECT * FROM AspNetUsers WHERE FirstName LIKE @p0 OR LastName LIKE @p0";
             string wrapString = "%" + searchString + "%";
 
             List<ApplicationUser> users = _context.Users.FromSqlRaw(sql, wrapString).ToList();
-
             string json = JsonConvert.SerializeObject(users);
             return json;
         }
-
+        // Displays the edit view for the specific user id | Admin/Edit/id 
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrEmpty(id)) return NotFound();
-
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
 
@@ -92,11 +104,10 @@ namespace GaaS_Station.Controllers
                 AllRoles = allRoles!,
                 UserRoles = userRoles
             };
-
             return View(viewModel);
         }
 
-        // EDIT user
+        // Updates user details and roles 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AdminVM viewModel, List<string> selectedRoles)
@@ -110,10 +121,12 @@ namespace GaaS_Station.Controllers
             user.LastName = viewModel.LastName;
             await _userManager.UpdateAsync(user);
 
+            // Role synchronisation 
+            // Fetch user's current and [user] selected roles
             var currentRoles = await _userManager.GetRolesAsync(user);
-
             selectedRoles ??= new List<string>();
 
+            // Checks which roles needs to be added and removed
             var rolesToAdd = selectedRoles.Except(currentRoles);
             var rolesToRemove = currentRoles.Except(selectedRoles);
 
@@ -123,7 +136,7 @@ namespace GaaS_Station.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // DELETE user
+        // Deletes user if found
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
@@ -133,19 +146,15 @@ namespace GaaS_Station.Controllers
             {
                 var result = await _userManager.DeleteAsync(user);
                 return RedirectToAction(nameof(Index));
-
             }
             return NotFound("User not found");
         }
 
-        // Stations
+        // Displays all stations | Stations.cshtml
         public async Task<IActionResult> Stations(string searchString, int? page)
         {
-            var baseUrl = _configuration["ApiSettings:BaseUrl"];
-            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
-
             var client = _clientFactory.CreateClient();
-            string url = $"{baseUrl}station/search?apiKey={apiKey}";
+            string url = $"{_baseUrl}station/search?apiKey={_apiKey}";
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -180,16 +189,15 @@ namespace GaaS_Station.Controllers
             ViewBag.SearchString = searchString;
             return View(pagedList);
         }
+
+        // Search suggestion for Admin/Stations
         [HttpGet]
         public async Task<IActionResult> StationsAJAX(string searchString)
         {
             searchString ??= string.Empty;
 
-            var baseUrl = _configuration["ApiSettings:BaseUrl"];
-            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
-
             var client = _clientFactory.CreateClient();
-            string url = $"{baseUrl}station/search?apiKey={apiKey}";
+            string url = $"{_baseUrl}station/search?apiKey={_apiKey}";
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -218,14 +226,13 @@ namespace GaaS_Station.Controllers
 
             return Json(stationsVMList);
         }
+
+        // Displays edit view for the sepcific station, using station id | Admin/EditStation/Id
         public async Task<IActionResult> EditStation(int id)
         {
-            var baseUrl = _configuration["ApiSettings:BaseUrl"];
-            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
-
             var client = _clientFactory.CreateClient();
 
-            var response = await client.GetAsync($"{baseUrl}station/search?apiKey={apiKey}");
+            var response = await client.GetAsync($"{_baseUrl}station/search?apiKey={_apiKey}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -255,6 +262,7 @@ namespace GaaS_Station.Controllers
 
             return View(model);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditStation(int id, StationVM model)
@@ -263,9 +271,6 @@ namespace GaaS_Station.Controllers
             {
                 return BadRequest();
             }
-
-            var baseUrl = _configuration["ApiSettings:BaseUrl"];
-            var apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
 
             var client = _clientFactory.CreateClient();
 
@@ -277,7 +282,7 @@ namespace GaaS_Station.Controllers
                 longitude = model.Longitude,
                 brand = model.BrandId,
                 branch = model.Branch,
-                key = apiKey
+                key = _apiKey
             };
 
             var jsonContent = new StringContent(
@@ -286,7 +291,7 @@ namespace GaaS_Station.Controllers
                 "application/json"
             );
 
-            var response = await client.PostAsync($"{baseUrl}station/update", jsonContent);
+            var response = await client.PostAsync($"{_baseUrl}station/update", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -304,14 +309,11 @@ namespace GaaS_Station.Controllers
             return View(new StationVM());
         }
 
-        // POST: Admin/CreateStation
+        // Create a new station
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateStation(StationVM model)
         {
-            var baseUrl = _configuration["ApiSettings:BaseUrl"];
-            var apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
-
             var client = _clientFactory.CreateClient();
 
             var payload = new
@@ -321,7 +323,7 @@ namespace GaaS_Station.Controllers
                 longitude = model.Longitude,
                 brand = model.BrandId,
                 branch = model.Branch,
-                key = apiKey
+                key = _apiKey
             };
 
             var jsonContent = new StringContent(
@@ -331,7 +333,7 @@ namespace GaaS_Station.Controllers
             );
 
             // Calls your Azure Function create endpoint
-            var response = await client.PostAsync($"{baseUrl}station/create", jsonContent);
+            var response = await client.PostAsync($"{_baseUrl}station/create", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -348,15 +350,12 @@ namespace GaaS_Station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteStation(int id)
         {
-            var baseUrl = _configuration["ApiSettings:BaseUrl"];
-            var apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
-
             var client = _clientFactory.CreateClient();
 
             var payload = new
             {
                 stationID = id,
-                key = apiKey
+                key = _apiKey
             };
 
             var jsonContent = new StringContent(
@@ -365,7 +364,7 @@ namespace GaaS_Station.Controllers
                 "application/json"
             );
 
-            var response = await client.PostAsync($"{baseUrl}station/delete", jsonContent);
+            var response = await client.PostAsync($"{_baseUrl}station/delete", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -377,29 +376,28 @@ namespace GaaS_Station.Controllers
             TempData["ErrorMessage"] = $"Error deleting station: {errorContent}";
             return RedirectToAction(nameof(Stations));
         }
-        public class FuelTypeResponse
-        {
-            public int FuelID { get; set; }
-            public string FuelType { get; set; } = string.Empty;
-        }
 
-        private class PriceApiResponse
+        // Defines FuelType and corresponding id 
+        private Task<List<FuelType>> GetFuelTypesListAsync()
         {
-            public int PriceID { get; set; }
-            public int Station { get; set; }
-            public string? FuelType { get; set; }
-            public decimal PriceValue { get; set; }
+            // Hardcoded fuel types to reflect dbo.Fuel type
+            var fuelTypes = new List<FuelType>
+            {
+                new FuelType { FuelID = 1, FuelTypeName = "91 (Regular Unleaded)" },
+                new FuelType { FuelID = 2, FuelTypeName = "95 (Premium Unleaded)" },
+                new FuelType { FuelID = 3, FuelTypeName = "98 (High-Performance Unleaded)" },
+                new FuelType { FuelID = 4, FuelTypeName = "Diesel" }
+            };
+            return Task.FromResult(fuelTypes);
         }
 
         [HttpGet]
         public async Task<IActionResult> ManagePrices(int stationId)
         {
-            var baseUrl = _configuration["ApiSettings:BaseUrl"];
-            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
             var client = _clientFactory.CreateClient();
 
             // 1. Fetch station details
-            var stationResponse = await client.GetAsync($"{baseUrl}station/search?apiKey={apiKey}");
+            var stationResponse = await client.GetAsync($"{_baseUrl}station/search?apiKey={_apiKey}");
             if (!stationResponse.IsSuccessStatusCode) return RedirectToAction(nameof(Stations));
 
             var stationJson = await stationResponse.Content.ReadAsStringAsync();
@@ -411,17 +409,17 @@ namespace GaaS_Station.Controllers
             var fuelTypes = await GetFuelTypesListAsync();
 
             // 3. Fetch existing prices for this station
-            var priceResponse = await client.GetAsync($"{baseUrl}price/search?key={apiKey}&station={stationId}");
+            var priceResponse = await client.GetAsync($"{_baseUrl}price/search?key={_apiKey}&station={stationId}");
             var existingPrices = new List<StationPriceItemVM>();
             if (priceResponse.IsSuccessStatusCode)
             {
                 var priceJson = await priceResponse.Content.ReadAsStringAsync();
-                var apiPrices = JsonConvert.DeserializeObject<List<PriceApiResponse>>(priceJson) ?? new();
+                var apiPrices = JsonConvert.DeserializeObject<List<Price>>(priceJson) ?? new();
                 existingPrices = apiPrices.Select(p => new StationPriceItemVM
                 {
                     PriceId = p.PriceID,
                     StationId = p.Station,
-                    FuelTypeId = fuelTypes.FirstOrDefault(f => f.FuelTypeName.Equals(p.FuelType, StringComparison.OrdinalIgnoreCase))?.FuelId ?? 0,
+                    FuelTypeId = fuelTypes.FirstOrDefault(f => f.FuelTypeName.Equals(p.FuelType, StringComparison.OrdinalIgnoreCase))?.FuelID ?? 0,
                     PriceValue = p.PriceValue
                 }).ToList();
             }
@@ -437,25 +435,10 @@ namespace GaaS_Station.Controllers
             return View(model);
         }
 
-        private Task<List<FuelTypeItemVM>> GetFuelTypesListAsync()
-        {
-            var fuelTypes = new List<FuelTypeItemVM>
-    {
-        new FuelTypeItemVM { FuelId = 1, FuelTypeName = "91 (Regular Unleaded)" },
-        new FuelTypeItemVM { FuelId = 2, FuelTypeName = "95 (Premium Unleaded)" },
-        new FuelTypeItemVM { FuelId = 3, FuelTypeName = "98 (High-Performance Unleaded)" },
-        new FuelTypeItemVM { FuelId = 4, FuelTypeName = "Diesel" }
-    };
-
-            return Task.FromResult(fuelTypes);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveStationPrice(int stationId, int fuelTypeId, int priceId, decimal priceValue)
         {
-            var baseUrl = _configuration["ApiSettings:BaseUrl"];
-            string apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
             var client = _clientFactory.CreateClient();
 
             HttpResponseMessage response;
@@ -468,10 +451,10 @@ namespace GaaS_Station.Controllers
                     station = stationId,
                     fuelType = fuelTypeId,
                     priceValue = priceValue,
-                    key = apiKey
+                    key = _apiKey
                 };
                 var content = new StringContent(JsonConvert.SerializeObject(updatePayload), Encoding.UTF8, "application/json");
-                response = await client.PostAsync($"{baseUrl}price/update", content);
+                response = await client.PostAsync($"{_baseUrl}price/update", content);
             }
             else
             {
@@ -480,10 +463,10 @@ namespace GaaS_Station.Controllers
                     station = stationId,
                     fuelType = fuelTypeId,
                     priceValue = priceValue,
-                    key = apiKey
+                    key = _apiKey
                 };
                 var content = new StringContent(JsonConvert.SerializeObject(createPayload), Encoding.UTF8, "application/json");
-                response = await client.PostAsync($"{baseUrl}price/create", content);
+                response = await client.PostAsync($"{_baseUrl}price/create", content);
             }
 
             if (response.IsSuccessStatusCode)

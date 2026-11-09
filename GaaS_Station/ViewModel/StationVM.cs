@@ -10,9 +10,6 @@
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
 
-        // Plain list for fuel type dropdowns (No SelectListItem)
-        public List<FuelTypeItemVM> FuelTypes { get; set; } = new();
-
         // List of existing prices associated with this station
         public List<StationPriceManagementVM> Prices { get; set; } = new();
     }

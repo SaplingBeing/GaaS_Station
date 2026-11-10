@@ -51,9 +51,9 @@
                                         <li class="nav-item">
                                             <div class="dropdown">
                                                 <a class="nav-link dropdown-toggle @(currentController == "Admin" ? "active" : "")" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item @(currentController == "Admin" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Index">Manage Users</a></li>
-                                                    <li><a class="dropdown-item @(currentController == "Admin" && currentAction == "Stations" ? "active" : "")" asp-area="" asp-controller="Admin" asp-action="Stations">Manage Stations</a></li>
+                                                <ul class="dropdown-menu bg-white">
+                                                    <li><a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Index">Manage Users</a></li>
+                                                    <li><a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Stations">Manage Stations</a></li>
                                                 </ul>
                                             </div>
                                         </li>

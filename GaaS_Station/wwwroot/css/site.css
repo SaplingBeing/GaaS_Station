@@ -41,7 +41,7 @@ body {
 #backgroundImgFull {
     width: 100vw;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 50%;
@@ -139,7 +139,7 @@ h3, th {
     border-radius: 0px 24px 24px 0px
 }
 
-.errorBtn {
+.errorBtn, .errorBtn:hover {
     color: var(--white);
     background-color: var(--error);
 }
@@ -236,6 +236,13 @@ h3, th {
 .dropdown-toggle:focus, .dropdown-toggle:active {
     outline: none !important;
 }
+.dropdown-item{
+    border-radius: 0px !important;
+}
+.dropdown-item:active {
+    background-color: var(--white);
+    color: #ffffff;
+}
 /*Footer*/
 footer {
     box-shadow: 0 1px 4px 0 var(--shadowColour) !important;
@@ -292,12 +299,13 @@ th {
         border-radius: 0px !important;
         border: none !important;
     }
+
     .offcanvasBtn {
         padding: 10px;
         left: 100vw;
         visibility: visible;
         z-index: 1 !important;
-    } 
+    }
 
     #offcanvasGaas {
         z-index: 5 !important;

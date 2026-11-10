@@ -329,6 +329,11 @@ namespace GaaS_Station.Controllers
             {
                 return RedirectToAction(nameof(Stations));
             }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                TempData["ErrorMessage"] = $"Error creating station: {error}";
+            }
 
             var errorContent = await response.Content.ReadAsStringAsync();
             ModelState.AddModelError(string.Empty, $"Error from API: {errorContent}");

@@ -38,12 +38,6 @@
                                         <a class="nav-link @(currentController == "Gaas" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Gaas" asp-action="Index">GaaS</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="#" asp-action="#">About</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="#" asp-action="#">Auckland POI</a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                                     </li>
                                     @if (User.IsInRole("Admin"))

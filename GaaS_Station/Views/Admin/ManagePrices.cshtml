@@ -39,7 +39,7 @@
                                                 <input type="hidden" name="StationId" value="@Model.StationId">
                                                 <input type="hidden" name="FuelTypeId" value="@fuel.FuelID">
                                                 <input type="hidden" name="PriceId" value="@(existingPrice?.PriceID ?? 0)">
-                                                <input type="number" step="0.001" name="PriceValue" class="form-control" value="@(existingPrice != null ? existingPrice.PriceValue.ToString("0.000") : "")" placeholder="ex. 3.123" required>
+                                                <input type="number" step="any" name="PriceValue" class="form-control" value="@(existingPrice != null ? existingPrice.PriceValue.ToString("0.000") : "")" placeholder="ex. 3.123" required>
                                                 <button type="submit" class="btn primaryBtn text-nowrap">
                                                     @(existingPrice != null ? "Update Price" : "Add Price")
                                                 </button>

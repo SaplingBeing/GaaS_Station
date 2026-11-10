@@ -5,6 +5,5 @@ namespace GaaS_Station.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
-
     }
 }

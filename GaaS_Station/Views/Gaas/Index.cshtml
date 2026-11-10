@@ -3,6 +3,7 @@
     var results = ViewData["Results"] as List<StationResult>;
     var searchStation = ViewData["SearchStation"] as string;
     var searchFuelType = ViewData["SearchFuelType"] as string;
+    var favourites = ViewData["Favourites"] as List<int>;
     var hasCurrentLocation = ViewData["Latitude"] != null && ViewData["Longitude"] != null;
     var centerLng = hasCurrentLocation ? ViewData["Longitude"] : results != null && results.Count > 0 ? results[0].Longitude : 174.76m;
     var centerLat = hasCurrentLocation ? ViewData["Latitude"] : results != null && results.Count > 0 ? results[0].Latitude : -36.85m;
@@ -88,9 +89,22 @@
                         <div class="col-6 position-relative">
                             <h3 class="fw-bold">@result.Brand - @result.Branch</h3>
                             <p>@result.AddressString</p>
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn position-absolute top-0 end-0 m-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon" class="ratio-1x1" style="width:12px !important; height: 12px !important;"></button>
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <form asp-controller="Gaas" asp-action="Favourite" method="post">
+                                    <input type="hidden" name="stationId" value="@result.StationID">
+                                    <input type="hidden" name="locationTb" value="@ViewData["SearchLocation"]">
+                                    <input type="hidden" name="station" value="@ViewData["SearchStation"]">
+                                    <input type="hidden" name="fuelType" value="@ViewData["SearchFuelType"]">
+                                    <input type="hidden" name="latitude" value="@ViewData["Latitude"]">
+                                    <input type="hidden" name="longitude" value="@ViewData["Longitude"]">
+                                    <button type="submit" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="@(favourites != null && favourites.Contains(result.StationID) ? "/images/heart-fill.svg" : "/images/heart.svg")" alt="Favourite Icon"></button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a asp-area="Identity" asp-page="/Account/Login" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></a>
+                            }
                         </div>
                     </div>
                 </div>

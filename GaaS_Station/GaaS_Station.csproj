@@ -40,4 +40,9 @@
     <None Include="efpt.config.json.user" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Programming\ASPNETprojects\GaaS-API\GaaS-API.csproj" />
+    <ProjectReference Include="..\..\GaaS\GeoLocation\GeoLocation.csproj" />
+  </ItemGroup>
+
 </Project>

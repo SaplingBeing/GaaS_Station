@@ -71,21 +71,26 @@
         {
             @foreach (var result in results)
             {
-                <div class="p-3 mb-3 container-fluid glassBg">
+                <div class="p-3 mb-3 container-fluid glassBg resultContainer"
+                     data-lat="@result.Latitude.ToString()"
+                     data-lng="@result.Longitude.ToString()"
+                     style="cursor: pointer;">
                     <div class="row">
                         <div class="col-2">
-                            <img src="@result.Icon" alt="@result.Brand Logo" style="aspect-ratio: 1/1; width: 100px;" />
+                            <img src="@result.Icon" alt="@result.Brand Logo" class="w-100 ratio-1x1">
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
                             @foreach (var price in result.Prices)
                             {
-                                <h3>@price.FuelType?.Split(" (")[0] $@price.PriceValue.ToString("0.000")</h3>
+                                <p class="mb-1"><span class="fw-bold">@price.FuelType?.Split(" (")[0]</span> $@price.PriceValue.ToString("0.000")</p>
                             }
                         </div>
-                        <div class="col-8 position-relative">
+                        <div class="col-6 position-relative">
                             <h3 class="fw-bold">@result.Brand - @result.Branch</h3>
                             <p>@result.AddressString</p>
-                            <button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon"></button>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn position-absolute top-0 end-0 m-3 glassBg"><img src="/images/heart.svg" alt="Favourite Icon" class="ratio-1x1" style="width:12px !important; height: 12px !important;"></button>
                         </div>
                     </div>
                 </div>
@@ -101,7 +106,7 @@
             <div class="stationMarker d-flex align-items-center bg-white rounded-pill shadow p-1 pe-3" data-lng="@result.Longitude" data-lat="@result.Latitude">
                 <img src="@result.Icon" alt="@result.Brand Logo" class="me-2" style="width: 30px; height: 30px;">
                 <div>
-                    <p class="m-0 fw-bold">@result.Brand - @result.Branch</p>
+                    <h3 class="m-0 fw-bold">@result.Brand - @result.Branch</h3>
                     <p class="m-0" style="max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@result.AddressString</p>
                 </div>
             </div>
@@ -110,6 +115,7 @@
 }
 <script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
 <script>
+    // Map boundaries (Restricted to Auckland)
     const aucklandBounds = [
         [174.450, -37.210],
         [175.250, -36.400]
@@ -117,7 +123,7 @@
     const map = new maplibregl.Map({
         container: "map",
         style: "https://tiles.openfreemap.org/styles/liberty",
-        center: [@centerLng, @centerLat], // lng, lat — Auckland
+        center: [@centerLng, @centerLat],
         zoom: 11,
         attributionControl: false,
         dragRotate: false,
@@ -151,4 +157,16 @@
     map.addControl(new maplibregl.NavigationControl());
     map.touchZoomRotate.disableRotation();
     map.setMaxBounds(aucklandBounds);
+    // Zoom animation to zoom into a specific station when result is clicked 
+    document.querySelectorAll(".resultContainer").forEach(function (resultItem) {
+        resultItem.addEventListener("click", function () {
+            const lat = parseFloat(resultItem.dataset.lat);
+            const lng = parseFloat(resultItem.dataset.lng);
+            map.flyTo({
+                center: [lng, lat],
+                zoom: 15,
+                essential: true
+            });
+        });
+    });
 </script>

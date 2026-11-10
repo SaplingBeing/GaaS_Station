@@ -9,8 +9,5 @@
         public string AddressString { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
-
-        // List of existing prices associated with this station
-        public List<StationPriceManagementVM> Prices { get; set; } = new();
     }
 }

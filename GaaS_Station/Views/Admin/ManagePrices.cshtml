@@ -1,4 +1,4 @@
-﻿@model GaaS_Station.ViewModel.StationPriceManagementVM
+﻿@model GaaS_Station.ViewModel.StationPriceVM
 @{
     ViewData["Title"] = "Manage Station Prices";
 }
@@ -19,6 +19,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                            }
+                            @if (TempData["ErrorMessage"] != null)
+                            {
+                                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                            }
                             @if (Model.FuelTypes != null && Model.FuelTypes.Any())
                             {
                                 @foreach (var fuel in Model.FuelTypes)
@@ -30,7 +38,7 @@
                                             <form asp-action="SaveStationPrice" method="post" class="d-flex align-items-center gap-2">
                                                 <input type="hidden" name="StationId" value="@Model.StationId">
                                                 <input type="hidden" name="FuelTypeId" value="@fuel.FuelID">
-                                                <input type="hidden" name="PriceId" value="@(existingPrice?.PriceId ?? 0)">
+                                                <input type="hidden" name="PriceId" value="@(existingPrice?.PriceID ?? 0)">
                                                 <input type="number" step="0.001" name="PriceValue" class="form-control" value="@(existingPrice != null ? existingPrice.PriceValue.ToString("0.000") : "")" placeholder="ex. 3.123" required>
                                                 <button type="submit" class="btn primaryBtn text-nowrap">
                                                     @(existingPrice != null ? "Update Price" : "Add Price")

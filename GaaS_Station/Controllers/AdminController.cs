@@ -236,7 +236,6 @@ namespace GaaS_Station.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
-                TempData["ErrorMessage"] = "Could not connect to station service.";
                 return RedirectToAction(nameof(Stations));
             }
 
@@ -250,7 +249,7 @@ namespace GaaS_Station.Controllers
                 return NotFound();
             }
 
-            var model = new StationVM
+            var stationVM = new StationVM
             {
                 StationId = station.StationId,
                 Branch = station.Branch,
@@ -260,14 +259,15 @@ namespace GaaS_Station.Controllers
                 Longitude = station.Longitude
             };
 
-            return View(model);
+            return View(stationVM);
         }
 
+        // Updates station details 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditStation(int id, StationVM model)
+        public async Task<IActionResult> EditStation(int id, StationVM stationVM)
         {
-            if (id != model.StationId)
+            if (id != stationVM.StationId)
             {
                 return BadRequest();
             }
@@ -276,32 +276,27 @@ namespace GaaS_Station.Controllers
 
             var payload = new
             {
-                stationID = model.StationId,
-                address = model.AddressString,
-                latitude = model.Latitude,
-                longitude = model.Longitude,
-                brand = model.BrandId,
-                branch = model.Branch,
+                stationID = stationVM.StationId,
+                address = stationVM.AddressString,
+                latitude = stationVM.Latitude,
+                longitude = stationVM.Longitude,
+                brand = stationVM.BrandId,
+                branch = stationVM.Branch,
                 key = _apiKey
             };
 
-            var jsonContent = new StringContent(
-                JsonConvert.SerializeObject(payload),
-                Encoding.UTF8,
-                "application/json"
-            );
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8,"application/json");
 
             var response = await client.PostAsync($"{_baseUrl}station/update", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["SuccessMessage"] = "Station updated successfully!";
                 return RedirectToAction(nameof(Stations));
             }
 
             var errorContent = await response.Content.ReadAsStringAsync();
             ModelState.AddModelError(string.Empty, $"Error from API: {errorContent}");
-            return View(model);
+            return View(stationVM);
         }
 
         public IActionResult CreateStation()
@@ -312,38 +307,32 @@ namespace GaaS_Station.Controllers
         // Create a new station
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateStation(StationVM model)
+        public async Task<IActionResult> CreateStation(StationVM stationVM)
         {
             var client = _clientFactory.CreateClient();
 
             var payload = new
             {
-                address = model.AddressString,
-                latitude = model.Latitude,
-                longitude = model.Longitude,
-                brand = model.BrandId,
-                branch = model.Branch,
+                address = stationVM.AddressString,
+                latitude = stationVM.Latitude,
+                longitude = stationVM.Longitude,
+                brand = stationVM.BrandId,
+                branch = stationVM.Branch,
                 key = _apiKey
             };
 
-            var jsonContent = new StringContent(
-                JsonConvert.SerializeObject(payload),
-                Encoding.UTF8,
-                "application/json"
-            );
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
 
-            // Calls your Azure Function create endpoint
             var response = await client.PostAsync($"{_baseUrl}station/create", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["SuccessMessage"] = "Station created successfully!";
                 return RedirectToAction(nameof(Stations));
             }
 
             var errorContent = await response.Content.ReadAsStringAsync();
             ModelState.AddModelError(string.Empty, $"Error from API: {errorContent}");
-            return View(model);
+            return View(stationVM);
         }
 
         [HttpPost]
@@ -358,17 +347,12 @@ namespace GaaS_Station.Controllers
                 key = _apiKey
             };
 
-            var jsonContent = new StringContent(
-                JsonConvert.SerializeObject(payload),
-                Encoding.UTF8,
-                "application/json"
-            );
+            var jsonContent = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
 
             var response = await client.PostAsync($"{_baseUrl}station/delete", jsonContent);
 
             if (response.IsSuccessStatusCode)
             {
-                TempData["SuccessMessage"] = "Station deleted successfully!";
                 return RedirectToAction(nameof(Stations));
             }
 
@@ -396,7 +380,7 @@ namespace GaaS_Station.Controllers
         {
             var client = _clientFactory.CreateClient();
 
-            // 1. Fetch station details
+            // Fetch station details
             var stationResponse = await client.GetAsync($"{_baseUrl}station/search?apiKey={_apiKey}");
             if (!stationResponse.IsSuccessStatusCode) return RedirectToAction(nameof(Stations));
 
@@ -405,26 +389,26 @@ namespace GaaS_Station.Controllers
             var station = stations.FirstOrDefault(s => s.StationId == stationId);
             if (station == null) return NotFound();
 
-            // 2. Fetch all fuel types
+            // Fetch all fuel types
             var fuelTypes = await GetFuelTypesListAsync();
 
-            // 3. Fetch existing prices for this station
+            // Fetch existing prices for this station
             var priceResponse = await client.GetAsync($"{_baseUrl}price/search?key={_apiKey}&station={stationId}");
-            var existingPrices = new List<StationPriceItemVM>();
+            var existingPrices = new List<Price>();
             if (priceResponse.IsSuccessStatusCode)
             {
                 var priceJson = await priceResponse.Content.ReadAsStringAsync();
                 var apiPrices = JsonConvert.DeserializeObject<List<Price>>(priceJson) ?? new();
-                existingPrices = apiPrices.Select(p => new StationPriceItemVM
+                existingPrices = apiPrices.Select(p => new Price
                 {
-                    PriceId = p.PriceID,
-                    StationId = p.Station,
+                    PriceID = p.PriceID,
+                    Station = p.Station,
                     FuelTypeId = fuelTypes.FirstOrDefault(f => f.FuelTypeName.Equals(p.FuelType, StringComparison.OrdinalIgnoreCase))?.FuelID ?? 0,
                     PriceValue = p.PriceValue
                 }).ToList();
             }
 
-            var model = new StationPriceManagementVM
+            var stationPriceVM = new StationPriceVM
             {
                 StationId = station.StationId,
                 StationName = $"{station.BrandName} - {station.Branch}",
@@ -432,7 +416,7 @@ namespace GaaS_Station.Controllers
                 Prices = existingPrices
             };
 
-            return View(model);
+            return View(stationPriceVM);
         }
 
         [HttpPost]
@@ -468,7 +452,7 @@ namespace GaaS_Station.Controllers
                 var content = new StringContent(JsonConvert.SerializeObject(createPayload), Encoding.UTF8, "application/json");
                 response = await client.PostAsync($"{_baseUrl}price/create", content);
             }
-
+            // Message if price sucessfully updates or not
             if (response.IsSuccessStatusCode)
             {
                 TempData["SuccessMessage"] = "Fuel price saved successfully!";

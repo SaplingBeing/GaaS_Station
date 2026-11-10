@@ -50,6 +50,10 @@
 .maplibregl-ctrl-compass {
     visibility: hidden;
 }
+/*Off Canvas Menu*/
+#offcanvasGaas{
+    border-radius: 0px 30px 30px 0px !important; 
+}
 /*Weather*/
 #weatherContainer {
     position: absolute;
@@ -64,5 +68,8 @@
 @media screen and (max-width: 576px) {
     .maplibregl-ctrl-zoom-in, .maplibregl-ctrl-zoom-out {
         margin-bottom: 80px !important;
+    }
+    #offcanvasGaas {
+        border-radius: 0px !important;
     }
 }

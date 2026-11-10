@@ -93,10 +93,6 @@ h3, th {
     color: var(--textColour);
 }
 
-/*.form-control {
-    border-radius: 30px !important;
-}*/
-
 .form-floating > label::after {
     background-color: transparent !important;
 }

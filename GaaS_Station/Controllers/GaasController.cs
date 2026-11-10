@@ -85,7 +85,10 @@ namespace GaaS_Station.Controllers
 
                 // If they pick a fuel type, the one without price for that fuel will not needed
                 if (hasFuelType) results = results.Where(r => r.Prices.Count > 0).ToList();
-
+                // Orders the result from lowest price to highest
+                results = results
+                    .OrderBy(r => r.Prices.Any() ? r.Prices.Min(p => p.PriceValue) : decimal.MaxValue)
+                    .ToList();
                 ViewData["Results"] = results;
                 return View();
             }

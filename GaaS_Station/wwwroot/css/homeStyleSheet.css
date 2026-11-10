@@ -48,9 +48,6 @@ body:has(#img3:hover) #img1 {
     border-radius: 200px 200px 0px 0px;
     box-shadow: 0 1px 4px 0 var(--shadowColour);
 }
-.teamImg:hover {
-        filter: blur(4px);
-}
 .name {
     color: var(--white);
 }

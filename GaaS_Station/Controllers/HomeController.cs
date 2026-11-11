@@ -38,7 +38,7 @@ namespace GaaS_Station.Controllers
 
                 var results = (await geoResponse.Content.ReadFromJsonAsync<List<StationResult>>() ?? new List<StationResult>()).Where(r => favourites.Contains(r.StationID)).ToList();
 
-                var priceResponse = await _httpClientFactory.CreateClient("GaaSApi").GetAsync($"price/search?key={Uri.EscapeDataString(apiKey)}&Code={_configuration["ApiSettings:Key"]}");
+                var priceResponse = await _httpClientFactory.CreateClient("GaaSApi").GetAsync($"price/search?apiKey={Uri.EscapeDataString(apiKey)}&Code={_configuration["ApiSettings:Key"]}");
                 var prices = priceResponse.IsSuccessStatusCode ? await priceResponse.Content.ReadFromJsonAsync<List<PriceResult>>() : new List<PriceResult>();
 
                 foreach (var result in results)

@@ -400,7 +400,7 @@ namespace GaaS_Station.Controllers
             var fuelTypes = await GetFuelTypesListAsync();
 
             // Fetch existing prices for this station
-            var priceResponse = await client.GetAsync($"{_baseUrl}price/search?key={_apiKey}&station={stationId}&Code={_azKey}");
+            var priceResponse = await client.GetAsync($"{_baseUrl}price/search?apiKey={_apiKey}&station={stationId}&Code={_azKey}");
             var existingPrices = new List<Price>();
             if (priceResponse.IsSuccessStatusCode)
             {

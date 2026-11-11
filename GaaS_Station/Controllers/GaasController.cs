@@ -75,7 +75,7 @@ namespace GaaS_Station.Controllers
 
                 // Get all the price in one go then match it by the station name since price search dont give back station id
                 var priceClient = _httpClientFactory.CreateClient("GaaSApi");
-                var priceEndpoint = $"price/search?key={Uri.EscapeDataString(apiKey)}&Code={_azKey}";
+                var priceEndpoint = $"price/search?apiKey={Uri.EscapeDataString(apiKey)}&Code={_azKey}";
                 if (hasFuelType) priceEndpoint += $"&fuelType={Uri.EscapeDataString(fuelType!)}";
 
                 var priceResponse = await priceClient.GetAsync(priceEndpoint);

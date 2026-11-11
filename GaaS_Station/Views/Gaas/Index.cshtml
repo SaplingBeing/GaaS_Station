@@ -86,7 +86,7 @@
                                 <p class="mb-1"><span class="fw-bold">@price.FuelType.Split(" (")[0]</span> $@price.PriceValue.ToString("0.000")</p>
                             }
                         </div>
-                        <div class="col-6 position-relative">
+                        <div class="col-7 position-relative">
                             <h3 class="fw-bold">@result.Brand - @result.Branch</h3>
                             <p>@result.AddressString</p>
                             @if (User.Identity?.IsAuthenticated == true)

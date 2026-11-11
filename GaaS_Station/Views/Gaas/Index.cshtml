@@ -83,7 +83,7 @@
                         <div class="col-3">
                             @foreach (var price in result.Prices)
                             {
-                                <p class="mb-1"><span class="fw-bold">@price.FuelType?.Split(" (")[0]</span> $@price.PriceValue.ToString("0.000")</p>
+                                <p class="mb-1"><span class="fw-bold">@price.FuelType.Split(" (")[0]</span> $@price.PriceValue.ToString("0.000")</p>
                             }
                         </div>
                         <div class="col-6 position-relative">

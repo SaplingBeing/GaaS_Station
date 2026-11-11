@@ -15,9 +15,12 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpClient("GaaSApi", client => {
+builder.Services.AddHttpClient("GaaSApi", client =>
+{
     var baseURL = builder.Configuration["ApiSettings:BaseUrl"];
+    var key = builder.Configuration["ApiSettings:Key"];
     client.BaseAddress = new Uri(baseURL);
+    client.DefaultRequestHeaders.Add("x-functions-key", key);
 });
 builder.Services.AddHttpClient("GeoLocationApi", client => client.BaseAddress = new Uri(builder.Configuration["ApiSettings:GeoLocationBaseUrl"]));
 

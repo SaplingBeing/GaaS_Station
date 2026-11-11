@@ -13,6 +13,7 @@ namespace GaaS_Station.Controllers
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly string _azKey;
 
         public GaasController(IHttpClientFactory httpClientFactory, IConfiguration configuration, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -20,6 +21,7 @@ namespace GaaS_Station.Controllers
             _configuration = configuration;
             _context = context;
             _userManager = userManager;
+            _azKey = _configuration["ApiSettings:Key"];
         }
 
         public async Task<IActionResult> Index(string? locationTb, string? station, string? fuelType, decimal? latitude, decimal? longitude)
@@ -73,7 +75,7 @@ namespace GaaS_Station.Controllers
 
                 // Get all the price in one go then match it by the station name since price search dont give back station id
                 var priceClient = _httpClientFactory.CreateClient("GaaSApi");
-                var priceEndpoint = $"price/search?key={Uri.EscapeDataString(apiKey)}";
+                var priceEndpoint = $"price/search?key={Uri.EscapeDataString(apiKey)}&Code={_azKey}";
                 if (hasFuelType) priceEndpoint += $"&fuelType={Uri.EscapeDataString(fuelType!)}";
 
                 var priceResponse = await priceClient.GetAsync(priceEndpoint);
@@ -81,6 +83,7 @@ namespace GaaS_Station.Controllers
 
                 foreach (var result in results)
                 {
+                    // Changes the image corresponding to the station's brand
                     result.Icon = (result.Brand?.ToLower()) switch
                     {
                         "z energy" => "/images/z.png",

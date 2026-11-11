@@ -2,6 +2,7 @@
     ViewData["Title"] = "Home";
     var searchStation = ViewData["SearchStation"] as string;
     var searchFuelType = ViewData["SearchFuelType"] as string;
+    var favourites = ViewData["Favourites"] as List<StationResult>;
 }
 <link rel="stylesheet" href="~/css/homeStyleSheet.css" asp-append-version="true">
 @*Background image*@
@@ -26,8 +27,8 @@
                 <select class="form-select p-2 ps-5" name="station">
                     <option selected>Station</option>
                     <option value="BP" selected="@(searchStation == "BP")">BP</option>
-                    <option value="Mobil" selected="@(searchStation == "Mobil")">Mobil</option>
                     <option value="Z Energy" selected="@(searchStation == "Z Energy")">Z Energy</option>
+                    <option value="Caltex" selected="@(searchStation == "Caltex")">Caltex</option>
                 </select>
             </div>
             <div class="col-sm-5 p-1 position-relative">
@@ -46,6 +47,47 @@
         </div>
     </div>
 </form>
+@* Favourites *@
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="row">
+        <div class="col-12 text-center p-3 mb-3">
+            <h1><b>Favourites</b></h1>
+        </div>
+    </div>
+    <div class="container my-4">
+        <div class="row row-cols-2 row-cols-md-2 g-5">
+            @if (favourites == null || favourites.Count == 0)
+            {
+                <p class="text-center w-100">No favourites yet.</p>
+            }
+            else
+            {
+                @foreach (var result in favourites)
+                {
+                    <div class="p-3 container-fluid glassBg">
+                        <div class="row">
+                            <div class="col-2">
+                                <img src="@result.Icon" alt="@result.Brand Logo" class="w-100 ratio-1x1">
+                            </div>
+                            <div class="col-3">
+                                @foreach (var price in result.Prices)
+                                {
+                                    <p class="mb-1"><span class="fw-bold">@price.FuelType?.Split(" (")[0]</span> $@price.PriceValue.ToString("0.000")</p>
+                                }
+                            </div>
+                            <div class="col-7 position-relative">
+                                <h3 class="fw-bold">@result.Brand - @result.Branch</h3>
+                                <p>@result.AddressString</p>
+                                <button type="button" class="btn position-absolute top-0 end-0 me-3 glassBg"><img src="/images/heart-fill.svg" alt="Favourite Icon"></button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
 @* Auckland POI *@
 <div class="d-inline-block overflow-hidden p-0 m-5 glassBg" id="poiContainer">
     <div class="row">

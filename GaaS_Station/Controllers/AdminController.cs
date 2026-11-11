@@ -21,6 +21,7 @@ namespace GaaS_Station.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly string _baseUrl;
         private readonly string _apiKey;
+        private readonly string _azKey;
 
         // Constructor
         public AdminController(ApplicationDbContext context, IHttpClientFactory clientFactory, IConfiguration configuration, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
@@ -33,6 +34,7 @@ namespace GaaS_Station.Controllers
             // Gets baseUrl and Admin api key from appsettings.json
             _baseUrl = _configuration["ApiSettings:BaseUrl"];
             _apiKey = _configuration["ApiSettings:GAAS_ADMIN_API_KEY"];
+            _azKey = _configuration["ApiSettings:Key"];
         }
 
         // Display all users | Admin/Index.cshtml
@@ -154,7 +156,7 @@ namespace GaaS_Station.Controllers
         public async Task<IActionResult> Stations(string searchString, int? page)
         {
             var client = _clientFactory.CreateClient();
-            string url = $"{_baseUrl}station/search?apiKey={_apiKey}";
+            string url = $"{_baseUrl}station/search?apiKey={_apiKey}&Code={_azKey}";
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -197,7 +199,7 @@ namespace GaaS_Station.Controllers
             searchString ??= string.Empty;
 
             var client = _clientFactory.CreateClient();
-            string url = $"{_baseUrl}station/search?apiKey={_apiKey}";
+            string url = $"{_baseUrl}station/search?apiKey={_apiKey}&Code={_azKey}";
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -232,7 +234,7 @@ namespace GaaS_Station.Controllers
         {
             var client = _clientFactory.CreateClient();
 
-            var response = await client.GetAsync($"{_baseUrl}station/search?apiKey={_apiKey}");
+            var response = await client.GetAsync($"{_baseUrl}station/search?apiKey={_apiKey}&Code={_azKey}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -272,7 +274,7 @@ namespace GaaS_Station.Controllers
                 return BadRequest();
             }
 
-            var client = _clientFactory.CreateClient();
+            var client = _clientFactory.CreateClient("GaaSApi");
 
             var payload = new
             {
@@ -309,7 +311,7 @@ namespace GaaS_Station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateStation(StationVM stationVM)
         {
-            var client = _clientFactory.CreateClient();
+            var client = _clientFactory.CreateClient("GaaSApi");
 
             var payload = new
             {
@@ -344,7 +346,7 @@ namespace GaaS_Station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteStation(int id)
         {
-            var client = _clientFactory.CreateClient();
+            var client = _clientFactory.CreateClient("GaaSApi");
 
             var payload = new
             {
@@ -386,7 +388,7 @@ namespace GaaS_Station.Controllers
             var client = _clientFactory.CreateClient();
 
             // Fetch station details
-            var stationResponse = await client.GetAsync($"{_baseUrl}station/search?apiKey={_apiKey}");
+            var stationResponse = await client.GetAsync($"{_baseUrl}station/search?apiKey={_apiKey}&Code={_azKey}");
             if (!stationResponse.IsSuccessStatusCode) return RedirectToAction(nameof(Stations));
 
             var stationJson = await stationResponse.Content.ReadAsStringAsync();
@@ -398,7 +400,7 @@ namespace GaaS_Station.Controllers
             var fuelTypes = await GetFuelTypesListAsync();
 
             // Fetch existing prices for this station
-            var priceResponse = await client.GetAsync($"{_baseUrl}price/search?key={_apiKey}&station={stationId}");
+            var priceResponse = await client.GetAsync($"{_baseUrl}price/search?key={_apiKey}&station={stationId}&Code={_azKey}");
             var existingPrices = new List<Price>();
             if (priceResponse.IsSuccessStatusCode)
             {
@@ -428,7 +430,7 @@ namespace GaaS_Station.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveStationPrice(int stationId, int fuelTypeId, int priceId, decimal priceValue)
         {
-            var client = _clientFactory.CreateClient();
+            var client = _clientFactory.CreateClient("GaaSApi");
 
             HttpResponseMessage response;
 

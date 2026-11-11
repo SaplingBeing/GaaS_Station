@@ -112,7 +112,7 @@ namespace GaaS_Station.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Favourite(int stationId, string? locationTb, string? station, string? fuelType, decimal? latitude, decimal? longitude)
+        public async Task<IActionResult> Favourite(int stationId, string? locationTb, string? station, string? fuelType, decimal? latitude, decimal? longitude, string? returnTo)
         {
             var userId = _userManager.GetUserId(User);
             var favourite = await _context.UserFavourites.FindAsync(userId, stationId);
@@ -122,6 +122,7 @@ namespace GaaS_Station.Controllers
 
             await _context.SaveChangesAsync();
 
+            if (returnTo == "Home") return RedirectToAction("Index", "Home");
             return RedirectToAction("Index", new { locationTb, station, fuelType, latitude, longitude });
         }
     }

@@ -1,5 +1,9 @@
-﻿using GaaS_Station.Models;
+﻿using GaaS_Station.Data;
+using GaaS_Station.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace GaaS_Station.Controllers
 {
@@ -7,12 +11,16 @@ namespace GaaS_Station.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly string _azKey;
 
-        public GaasController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public GaasController(IHttpClientFactory httpClientFactory, IConfiguration configuration, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
+            _context = context;
+            _userManager = userManager;
             _azKey = _configuration["ApiSettings:Key"];
         }
 
@@ -89,9 +97,9 @@ namespace GaaS_Station.Controllers
                 // If they pick a fuel type, the one without price for that fuel will not needed
                 if (hasFuelType) results = results.Where(r => r.Prices.Count > 0).ToList();
                 // Orders the result from lowest price to highest
-                results = results
-                    .OrderBy(r => r.Prices.Any() ? r.Prices.Min(p => p.PriceValue) : decimal.MaxValue)
-                    .ToList();
+                results = results.OrderBy(r => r.Prices.Any() ? r.Prices.Min(p => p.PriceValue) : decimal.MaxValue).ToList();
+                var userId = _userManager.GetUserId(User);
+                if (userId != null) ViewData["Favourites"] = await _context.UserFavourites.Where(f => f.UserId == userId).Select(f => f.StationId).ToListAsync();
                 ViewData["Results"] = results;
                 return View();
             }
@@ -100,6 +108,21 @@ namespace GaaS_Station.Controllers
                 ViewData["Error"] = $"Error: {ex.Message}";
                 return View();
             }
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Favourite(int stationId, string? locationTb, string? station, string? fuelType, decimal? latitude, decimal? longitude, string? returnTo)
+        {
+            var userId = _userManager.GetUserId(User);
+            var favourite = await _context.UserFavourites.FindAsync(userId, stationId);
+
+            if (favourite == null) _context.UserFavourites.Add(new UserFavourite { UserId = userId!, StationId = stationId });
+            else _context.UserFavourites.Remove(favourite);
+
+            await _context.SaveChangesAsync();
+
+            if (returnTo == "Home") return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", new { locationTb, station, fuelType, latitude, longitude });
         }
     }
 }

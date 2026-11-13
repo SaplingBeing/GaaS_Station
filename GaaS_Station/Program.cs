@@ -1,6 +1,7 @@
 using GaaS_Station.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +24,17 @@ builder.Services.AddHttpClient("GaaSApi", client =>
     client.DefaultRequestHeaders.Add("x-functions-key", key);
 });
 builder.Services.AddHttpClient("GeoLocationApi", client => client.BaseAddress = new Uri(builder.Configuration["ApiSettings:GeoLocationBaseUrl"]));
-
-
+//Sign in with Google
+var services = builder.Services;
+var configuration = builder.Configuration;
+services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+});
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
